@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '../views/Home.vue';
 import Signup from '../views/Signup.vue';
 import Login from '../views/Login.vue';
+import NotFound from '../views/NotFound.vue';
 import Items from '../views/items/Items.vue';
 import ItemDetails from '../views/items/ItemDetails.vue';
 
@@ -30,6 +31,12 @@ const routes = [
     path: '/items/:id',
     name: 'ItemDetails',
     component: ItemDetails,
+    props: true,
+  },
+  {
+    path: '/:catchAll(.*)',
+    name: 'NotFound',
+    component: NotFound,
   },
 ];
 

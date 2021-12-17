@@ -1,26 +1,19 @@
 <template>
   <div>
     <div>
-      <h1>Hello</h1>
-      <router-link :to="{ name: 'Items' }">Items</router-link>
-      <router-link :to="{ name: 'Login' }">Login</router-link>
-      <router-link :to="{ name: 'Signup' }">Signup</router-link>
-      <router-link :to="{ name: 'Home' }">Home</router-link>
+      <NavBar />
     </div>
     <router-view />
   </div>
 </template>
 
 <script>
-// import HelloWorld from "./components/HelloWorld.vue";
+import NavBar from './components/NavBar.vue';
 // import Home from "./views/Home.vue";
 
-// export default {
-//   name: "App",
-//   components: {
-//     Home,
-//   },
-// };
+export default {
+  components: { NavBar },
+};
 </script>
 
 <style>
