@@ -3,21 +3,22 @@
     <div>
       <router-link to="/login">Login</router-link>
       <router-link to="/signup">signup</router-link>
+      <router-link to="/">Home</router-link>
     </div>
-    <Home />
+    <router-view />
   </div>
 </template>
 
 <script>
 // import HelloWorld from "./components/HelloWorld.vue";
-import Home from "./views/Home.vue";
+// import Home from "./views/Home.vue";
 
-export default {
-  name: "App",
-  components: {
-    Home,
-  },
-};
+// export default {
+//   name: "App",
+//   components: {
+//     Home,
+//   },
+// };
 </script>
 
 <style>
