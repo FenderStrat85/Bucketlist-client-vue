@@ -1,9 +1,11 @@
 <template>
   <div>
     <div>
-      <router-link to="/login">Login</router-link>
-      <router-link to="/signup">signup</router-link>
-      <router-link to="/">Home</router-link>
+      <h1>Hello</h1>
+      <router-link :to="{ name: 'Items' }">Items</router-link>
+      <router-link :to="{ name: 'Login' }">Login</router-link>
+      <router-link :to="{ name: 'Signup' }">Signup</router-link>
+      <router-link :to="{ name: 'Home' }">Home</router-link>
     </div>
     <router-view />
   </div>
