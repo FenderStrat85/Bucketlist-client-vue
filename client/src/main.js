@@ -1,4 +1,4 @@
-import { createApp } from 'vue';
+import { createApp, provide, h } from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store/index';
@@ -8,6 +8,7 @@ import {
   createHttpLink,
   InMemoryCache,
 } from '@apollo/client/core';
+import { DefaultApolloClient } from '@vue/apollo-composable';
 
 // HTTP connection to the API
 const httpLink = createHttpLink({
@@ -24,4 +25,15 @@ const apolloClient = new ApolloClient({
   cache,
 });
 
-createApp(App).use(router).use(store).mount('#app');
+//default main.js setup when not using graphql
+// createApp(App).use(router).use(store).mount('#app');
+
+//setup for grpahql using composable api.
+//useMutation, useQuery and useSubscription can now be used throughout the app.
+const app = createApp({
+  setup() {
+    provide(DefaultApolloClient, apolloClient);
+  },
+  render: () => h(App),
+});
+app.use(router).use(store).mount('#app');
