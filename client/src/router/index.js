@@ -5,6 +5,8 @@ import Login from '../views/Login.vue';
 import NotFound from '../views/NotFound.vue';
 import Items from '../views/items/Items.vue';
 import ItemDetails from '../views/items/ItemDetails.vue';
+//within router to access store you need to import from @/store.
+import store from '@/store';
 
 const routes = [
   {
@@ -43,6 +45,18 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
+});
+
+//before entering each route, if not login/signup then redirect to login page.
+router.beforeEach((to, from, next) => {
+  if (
+    to.name !== 'Login' &&
+    to.name !== 'Signup' &&
+    !store.state.isAuthenticated
+  ) {
+    console.log(store.state);
+    next({ name: 'Login' });
+  } else next();
 });
 
 export default router;
