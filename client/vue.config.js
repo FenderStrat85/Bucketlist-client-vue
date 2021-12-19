@@ -1,5 +1,7 @@
-`pluginOptions: {
-  apollo: {
-    lintGQL: true;
-  }
-}`;
+module.exports = {
+  pluginOptions: {
+    apollo: {
+      lintGQL: true,
+    },
+  },
+};
