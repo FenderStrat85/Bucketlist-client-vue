@@ -11,6 +11,7 @@
     "@apollo/client": "^3.5.6",
     "@vue/apollo-composable": "^4.0.0-alpha.16",
     "core-js": "^3.6.5",
+    "eslint-plugin-graphql": "^4.0.0",
     "graphql": "^15.8.0",
     "graphql-tag": "^2.12.6",
     "vue": "^3.0.0",

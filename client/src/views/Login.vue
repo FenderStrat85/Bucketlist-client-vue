@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>I am the login page</h1>
-    <form @submit.prevent="loginUser(this.userInfo)">
+    <form @submit.prevent="loginUser()">
       <label for="email">Email:</label>
       <input type="email" name="email" v-model="email" required />
       <label for="password">Password:</label>
@@ -14,6 +14,8 @@
 <script>
 import { ref } from 'vue';
 import { useStore } from 'vuex';
+import { useMutation } from '@vue/apollo-composable';
+import gql from 'graphql-tag';
 
 export default {
   setup() {
@@ -26,18 +28,53 @@ export default {
     };
 
     const store = useStore();
-    const userInfo = {
+    const userInfoTest = {
       _id: 1,
       userEmail: '',
       accessToken: 'TestAccessToken',
     };
 
-    const loginUser = (userInfo) => {
-      userInfo.userEmail = email.value;
-      store.commit('loginUser', userInfo);
+    const userInfo = {
+      email: 'test@test.com',
+      password: '123',
     };
 
-    return { handleSubmit, email, password, loginUser, userInfo };
+    const loginUserTest = (userInfo) => {
+      userInfo.userEmail = email.value;
+      store.commit('loginUser', userInfoTest);
+    };
+    //variables need to be named after the type as defined in typedefs => loginInput in this case
+    // on line 51 => loginInput is the type $loginInput which is defined on the line above.
+    const { mutate: loginUser, onDone } = useMutation(
+      gql`
+        mutation loginUser($loginInput: LoginUserInput) {
+          loginUser(loginInput: $loginInput) {
+            _id
+            accessToken
+          }
+        }
+      `,
+      () => ({
+        variables: {
+          loginInput: {
+            email: email.value,
+            password: password.value,
+          },
+        },
+      }),
+    );
+    onDone((result) => {
+      store.commit('loginUser', result.data);
+    });
+
+    return {
+      handleSubmit,
+      email,
+      password,
+      loginUser,
+      loginUserTest,
+      userInfo,
+    };
   },
   //using options api
   // methods: {

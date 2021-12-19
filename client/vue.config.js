@@ -1,0 +1,5 @@
+`pluginOptions: {
+  apollo: {
+    lintGQL: true;
+  }
+}`;
