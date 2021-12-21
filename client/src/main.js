@@ -28,7 +28,7 @@ const apolloClient = new ApolloClient({
 //default main.js setup when not using graphql
 // createApp(App).use(router).use(store).mount('#app');
 
-//setup for grpahql using composable api.
+//setup for graphql using composable api.
 //useMutation, useQuery and useSubscription can now be used throughout the app.
 const app = createApp({
   setup() {
