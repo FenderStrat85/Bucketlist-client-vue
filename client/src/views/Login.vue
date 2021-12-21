@@ -8,11 +8,14 @@
       <input type="password" name="password" v-model="password" required />
       <button>Login</button>
     </form>
+    <div v-if="state.showErrorMessage">
+      <h2>There has been an error logging in</h2>
+    </div>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue';
+import { reactive, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useMutation } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
@@ -23,6 +26,9 @@ export default {
     const email = ref('');
     const password = ref('');
     const router = useRouter();
+    const state = reactive({
+      showErrorMessage: false,
+    });
 
     const handleSubmit = () => {
       console.log(email.value);
@@ -73,8 +79,8 @@ export default {
       store.commit('loginUser', result.data);
       router.push('/');
     });
-    onError((error) => {
-      console.log(error);
+    onError(() => {
+      state.showErrorMessage = true;
     });
 
     return {
@@ -84,6 +90,7 @@ export default {
       loginUser,
       loginUserTest,
       userInfo,
+      state,
     };
   },
   //using options api
