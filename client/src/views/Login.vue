@@ -16,11 +16,13 @@ import { ref } from 'vue';
 import { useStore } from 'vuex';
 import { useMutation } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
+import { useRouter } from 'vue-router';
 
 export default {
   setup() {
     const email = ref('');
     const password = ref('');
+    const router = useRouter();
 
     const handleSubmit = () => {
       console.log(email.value);
@@ -45,7 +47,11 @@ export default {
     };
     //variables need to be named after the type as defined in typedefs => loginInput in this case
     // on line 51 => loginInput is the type $loginInput which is defined on the line above.
-    const { mutate: loginUser, onDone } = useMutation(
+    const {
+      mutate: loginUser,
+      onDone,
+      onError,
+    } = useMutation(
       gql`
         mutation loginUser($loginInput: LoginUserInput) {
           loginUser(loginInput: $loginInput) {
@@ -65,6 +71,10 @@ export default {
     );
     onDone((result) => {
       store.commit('loginUser', result.data);
+      router.push('/');
+    });
+    onError((error) => {
+      console.log(error);
     });
 
     return {
