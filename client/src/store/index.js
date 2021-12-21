@@ -10,9 +10,9 @@ const store = createStore({
   mutations: {
     loginUser(state, payload) {
       console.log('payload', payload);
-      state._id = payload._id;
+      state._id = payload.loginUser._id;
       // state.userEmail = payload.userEmail;
-      state.accessToken = payload.accessToken;
+      state.accessToken = payload.loginUser.accessToken;
       state.isAuthenticated = true;
       console.log('state at end of function', state);
     },
