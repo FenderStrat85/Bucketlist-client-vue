@@ -3,18 +3,22 @@ import { createStore } from 'vuex';
 const store = createStore({
   state: {
     _id: null,
-    userEmail: null,
     accessToken: null,
+    firstName: null,
     isAuthenticated: false,
   },
   mutations: {
     loginUser(state, payload) {
-      console.log('payload', payload);
       state._id = payload.loginUser._id;
-      // state.userEmail = payload.userEmail;
       state.accessToken = payload.loginUser.accessToken;
+      state.firstName = payload.loginUser.firstName;
       state.isAuthenticated = true;
-      console.log('state at end of function', state);
+    },
+    createUser(state, payload) {
+      state._id = payload.createUser._id;
+      state.accessToken = payload.createUser.accessToken;
+      state.firstName = payload.createUser.firstName;
+      state.isAuthenticated = true;
     },
   },
 });

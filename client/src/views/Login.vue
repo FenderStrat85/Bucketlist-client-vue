@@ -23,34 +23,35 @@ import { useRouter } from 'vue-router';
 
 export default {
   setup() {
-    const email = ref('');
-    const password = ref('');
     const router = useRouter();
+    const store = useStore();
     const state = reactive({
       showErrorMessage: false,
     });
+    const email = ref('');
+    const password = ref('');
 
     const handleSubmit = () => {
       console.log(email.value);
       console.log(password.value);
     };
 
-    const store = useStore();
-    const userInfoTest = {
-      _id: 1,
-      userEmail: '',
-      accessToken: 'TestAccessToken',
-    };
+    //dummy test data when setting up store
+    // const userInfoTest = {
+    //   _id: 1,
+    //   userEmail: '',
+    //   accessToken: 'TestAccessToken',
+    // };
 
-    const userInfo = {
-      email: 'test@test.com',
-      password: '123',
-    };
+    // const userInfo = {
+    //   email: 'test@test.com',
+    //   password: '123',
+    // };
 
-    const loginUserTest = (userInfo) => {
-      userInfo.userEmail = email.value;
-      store.commit('loginUser', userInfoTest);
-    };
+    // const loginUserTest = (userInfo) => {
+    //   userInfo.userEmail = email.value;
+    //   store.commit('loginUser', userInfoTest);
+    // };
     //variables need to be named after the type as defined in typedefs => loginInput in this case
     // on line 51 => loginInput is the type $loginInput which is defined on the line above.
     const {
@@ -63,6 +64,7 @@ export default {
           loginUser(loginInput: $loginInput) {
             _id
             accessToken
+            firstName
           }
         }
       `,
@@ -88,8 +90,8 @@ export default {
       email,
       password,
       loginUser,
-      loginUserTest,
-      userInfo,
+      // loginUserTest,
+      // userInfo,
       state,
     };
   },

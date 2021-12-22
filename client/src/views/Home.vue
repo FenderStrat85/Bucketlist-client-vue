@@ -2,7 +2,7 @@
   <div>
     <h1>I am the home page</h1>
     <p>Is authenticated? {{ authenticationStatus }}</p>
-    <p>User is logged in using {{ userEmail }}</p>
+    <p>User is logged in using {{ firstName }}</p>
   </div>
 </template>
 
@@ -13,10 +13,10 @@ export default {
   setup() {
     const store = useStore();
     const authenticationStatus = computed(() => store.state.isAuthenticated);
-    const userEmail = computed(() => store.state.userEmail);
+    const firstName = computed(() => store.state.firstName);
     return {
       authenticationStatus,
-      userEmail,
+      firstName,
     };
   },
   // methods: {},
