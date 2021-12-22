@@ -14,17 +14,7 @@
 </template>
 
 <script>
-// import { ref } from '@vue/reactivity';
-// import { useStore } from 'vuex';
 export default {
-  // setUp() {
-  //   const store = useStore();
-  //   const isAuthenticated = ref(store.state.isAuthenticated);
-  //   return {
-  //     isAuthenticated,
-  //   };
-  // },
-
   methods: {
     show() {
       //accessing store outside of setUp()
