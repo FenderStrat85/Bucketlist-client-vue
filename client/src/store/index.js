@@ -20,6 +20,9 @@ const store = createStore({
       state.firstName = payload.createUser.firstName;
       state.isAuthenticated = true;
     },
+    logoutUser(state) {
+      state.isAuthenticated = false;
+    },
   },
 });
 

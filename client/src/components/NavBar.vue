@@ -1,8 +1,8 @@
 <template>
   <nav>
-    <span>Logged In as....</span>
-    <button @click="show">Logout</button>
     <div v-if="this.$store.state.isAuthenticated">
+      <span>Logged In as....</span>
+      <button @click="logout">Logout</button>
       <router-link :to="{ name: 'Home' }">Home</router-link>
       <router-link :to="{ name: 'Items' }">Items</router-link>
     </div>
@@ -14,12 +14,20 @@
 </template>
 
 <script>
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+
 export default {
-  methods: {
-    show() {
-      //accessing store outside of setUp()
-      console.log(this.$store.state);
-    },
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+    const logout = () => {
+      store.commit('logoutUser');
+      router.push('/login');
+    };
+    return {
+      logout,
+    };
   },
 };
 </script>
