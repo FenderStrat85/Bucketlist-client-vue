@@ -26,13 +26,14 @@ export default {
     ];
     const { result, loading, error } = useQuery(gql`
       query getBucketListItems {
-        TravelBucketListItem {
+        __typename
+        ... on TravelBucketListItem {
           _id
         }
-        EducationalBucketListItem {
+        ... on EducationalBucketListItem {
           _id
         }
-        PersonalBucketListItem {
+        ... on PersonalBucketListItem {
           _id
         }
       }
