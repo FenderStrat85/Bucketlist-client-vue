@@ -7,7 +7,10 @@ import {
   ApolloClient,
   createHttpLink,
   InMemoryCache,
+  ApolloLink,
+  from,
 } from '@apollo/client/core';
+
 import { DefaultApolloClient } from '@vue/apollo-composable';
 
 // HTTP connection to the API
@@ -16,12 +19,27 @@ const httpLink = createHttpLink({
   uri: 'http://localhost:4000',
 });
 
+//middleware created to add headers.
+//headers to set to the token that is contained inside vuex
+
+const authMiddleware = new ApolloLink((operation, forward) => {
+  // add the authorization to the headers
+  operation.setContext(({ headers = {} }) => ({
+    headers: {
+      ...headers,
+      authorization: store.state.accessToken || '',
+    },
+  }));
+
+  return forward(operation);
+});
+
 // Cache implementation
 const cache = new InMemoryCache();
 
 // Create the apollo client
 const apolloClient = new ApolloClient({
-  link: httpLink,
+  link: from([authMiddleware, httpLink]),
   cache,
 });
 

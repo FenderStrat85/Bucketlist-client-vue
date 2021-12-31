@@ -10,14 +10,25 @@
 </template>
 
 <script>
+import { useQuery } from '@vue/apollo-composable';
+import gql from 'graphql-tag';
+
 export default {
-  data() {
+  setup() {
+    const items = [
+      { title: 'Visit Japan', id: 1 },
+      { title: 'Visit China', id: 2 },
+      { title: 'Visit Korea', id: 3 },
+    ];
+    const { result } = useQuery(gql`
+      query getBucketListItems {
+        SavedItems
+      }
+    `);
+    console.log('result.value', result.value);
     return {
-      items: [
-        { title: 'Visit Japan', id: 1 },
-        { title: 'Visit China', id: 2 },
-        { title: 'Visit Korea', id: 3 },
-      ],
+      items,
+      result,
     };
   },
 };
