@@ -6,6 +6,10 @@
         <h2>{{ item.title }}</h2>
       </router-link>
     </div>
+
+    <div v-if="loading">Loading...</div>
+
+    <div v-else-if="error">Error: {{ error.message }}</div>
   </div>
 </template>
 
@@ -20,15 +24,25 @@ export default {
       { title: 'Visit China', id: 2 },
       { title: 'Visit Korea', id: 3 },
     ];
-    const { result } = useQuery(gql`
+    const { result, loading, error } = useQuery(gql`
       query getBucketListItems {
-        SavedItems
+        TravelBucketListItem {
+          _id
+        }
+        EducationalBucketListItem {
+          _id
+        }
+        PersonalBucketListItem {
+          _id
+        }
       }
     `);
     console.log('result.value', result.value);
     return {
       items,
       result,
+      loading,
+      error,
     };
   },
 };
