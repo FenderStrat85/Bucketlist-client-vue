@@ -26,15 +26,17 @@ export default {
     ];
     const { result, loading, error } = useQuery(gql`
       query getBucketListItems {
-        __typename
-        ... on TravelBucketListItem {
-          _id
-        }
-        ... on EducationalBucketListItem {
-          _id
-        }
-        ... on PersonalBucketListItem {
-          _id
+        getBucketListItems {
+          __typename
+          ... on TravelBucketListItem {
+            _id
+          }
+          ... on EducationalBucketListItem {
+            _id
+          }
+          ... on PersonalBucketListItem {
+            _id
+          }
         }
       }
     `);
