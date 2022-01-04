@@ -2,7 +2,7 @@
   <div>
     <h1>I am the item list page</h1>
     <div v-for="item in items" :key="item.id">
-      <router-link :to="{ name: 'ItemDetails', params: { id: item.id } }">
+      <router-link :to="{ name: 'GoalDetails', params: { id: item.id } }">
         <h2>{{ item.title }}</h2>
       </router-link>
     </div>

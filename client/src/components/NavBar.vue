@@ -4,7 +4,13 @@
       <span>Logged In as....</span>
       <button @click="logout">Logout</button>
       <router-link :to="{ name: 'Home' }">Home</router-link>
-      <router-link :to="{ name: 'Items' }">Items</router-link>
+      <router-link :to="{ name: 'Goals' }">Items</router-link>
+      <router-link :to="{ name: 'PersonalGoal' }"
+        >Add Personal Goal</router-link
+      >
+      <router-link :to="{ name: 'EducationalGoal' }"
+        >Add Education Goal</router-link
+      >
     </div>
     <div v-if="!this.$store.state.isAuthenticated">
       <router-link :to="{ name: 'Signup' }">Sign Up</router-link>
