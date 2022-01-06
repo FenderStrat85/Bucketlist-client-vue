@@ -1,8 +1,8 @@
 <template>
   <div>
     <h1>I am the item list page</h1>
-    <div v-for="item in items" :key="item.id">
-      <router-link :to="{ name: 'GoalDetails', params: { id: item.id } }">
+    <div v-for="item in result.getBucketListItems" :key="item._id">
+      <router-link :to="{ name: 'GoalDetails', params: { id: item._id } }">
         <h2>{{ item.title }}</h2>
       </router-link>
     </div>
@@ -30,22 +30,32 @@ export default {
           __typename
           ... on TravelBucketListItem {
             _id
+            category
+            title
           }
           ... on EducationalBucketListItem {
             _id
+            category
+            title
           }
           ... on PersonalBucketListItem {
             _id
+            category
+            title
           }
         }
       }
     `);
+    console.log('result', result);
     console.log('result.value', result.value);
+    const data = result.value;
+    console.log('data', data);
     return {
       items,
       result,
       loading,
       error,
+      data,
     };
   },
 };
