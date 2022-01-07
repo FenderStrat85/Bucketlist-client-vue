@@ -10,6 +10,16 @@
               id: item._id,
               title: item.title,
               category: item.category,
+              about: item.about,
+              cloudinaryPhotoUrl: item.cloudinaryPhotoUrl,
+              completed: item.completed,
+              dateCompleted: item.dateCompleted,
+              latitude: item.latitude,
+              longitude: item.longitude,
+              country: item.country,
+              city: item.city,
+              subject: item.subject,
+              areaOfLife: item.areaOfLife,
             },
           }"
         >
@@ -38,16 +48,26 @@ export default {
             _id
             category
             title
+            about
+            cloudinaryPhotoUrl
+            completed
+            dateCompleted
+            latitude
+            longitude
+            country
+            city
           }
           ... on EducationalBucketListItem {
             _id
             category
             title
+            subject
           }
           ... on PersonalBucketListItem {
             _id
             category
             title
+            areaOfLife
           }
         }
       }
