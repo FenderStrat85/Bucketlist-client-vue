@@ -1,16 +1,10 @@
 <template>
   <div>
     <div v-if="category === 'Travel'">
-      <h1>I am the the {{ category }} detail</h1>
-      <p>The items id is {{ id }}</p>
-      <p>The items category is {{ category }}</p>
-      <p>The items title is {{ title }}</p>
+      <TravelGoalCard :category="category" :title="title" />
     </div>
     <div v-if="category === 'Education'">
-      <h1>I am the the {{ category }} detail</h1>
-      <p>The items id is {{ id }}</p>
-      <p>The items category is {{ category }}</p>
-      <p>The items title is {{ title }}</p>
+      <EducationalGoalCard :category="category" :title="title" />
     </div>
     <div v-if="category === 'Personal'">
       <PersonalGoalCard :category="category" :title="title" />
@@ -20,12 +14,12 @@
 
 <script>
 import PersonalGoalCard from '../../components/PersonalGoalCard.vue';
-// import TravelGoalCard from '../../components/TravelGoalCard.vue';
-// import EducationalGoalCard from '../../components/EducationalGoalCard.vue';
+import EducationalGoalCard from '../../components/EducationalGoalCard.vue';
+import TravelGoalCard from '../../components/TravelGoalCard.vue';
 //passing the id through props as opposed to route params
 //passed as params in router link but then accessed as props
 export default {
-  components: { PersonalGoalCard },
+  components: { PersonalGoalCard, EducationalGoalCard, TravelGoalCard },
   props: ['id', 'title', 'category'],
   data() {
     return {

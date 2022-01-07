@@ -1,9 +1,14 @@
 <template>
-  <h1>Travel Card</h1>
+  <div>
+    <h1>{{ category }} Card</h1>
+    <h2>The title is: {{ title }}</h2>
+  </div>
 </template>
 
 <script>
-export default {};
+export default {
+  props: ['title', 'category'],
+};
 </script>
 
 <style></style>
