@@ -7,6 +7,7 @@ import Goals from '../views/goals/Goals.vue';
 import GoalDetails from '../views/goals/GoalDetails.vue';
 import PersonalGoal from '../views/PersonalGoal.vue';
 import EducationalGoal from '../views/EducationalGoal';
+import TravelGoal from '../views/TravelGoal';
 
 //within router to access store you need to import from @/store.
 import store from '@/store';
@@ -36,6 +37,11 @@ const routes = [
     path: '/addeducationalgoal',
     name: 'EducationalGoal',
     component: EducationalGoal,
+  },
+  {
+    path: '/addtravelgoal',
+    name: 'TravelGoal',
+    component: TravelGoal,
   },
   {
     path: '/goals',
