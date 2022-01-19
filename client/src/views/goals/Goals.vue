@@ -7,19 +7,33 @@
           :to="{
             name: 'GoalDetails',
             params: {
+              //All
               id: item._id,
               title: item.title,
               category: item.category,
               about: item.about,
-              cloudinaryPhotoUrl: item.cloudinaryPhotoUrl,
               completed: item.completed,
-              dateCompleted: item.dateCompleted,
+
+              //Travel
+              cloudinaryPhotoUrl: item.cloudinaryPhotoUrl,
               latitude: item.latitude,
               longitude: item.longitude,
               country: item.country,
               city: item.city,
+              dateCompleted: item.dateCompleted,
+
+              //Education
               subject: item.subject,
+              reasonForLearning: item.reasonForLearning,
+
+              //Personal
               areaOfLife: item.areaOfLife,
+              reasonForGoal: item.reasonForGoal,
+
+              //Education and Personal
+              desiredGoal: item.desiredGoal,
+              desiredCompletionDate: item.desiredCompletionDate,
+              completedOnTime: item.completedOnTime,
             },
           }"
         >

@@ -6,6 +6,7 @@
         :title="title"
         :about="about"
         :completed="completed"
+        v-bind="item"
       />
     </div>
     <div v-if="category === 'Education'">
@@ -29,12 +30,13 @@ export default {
   props: {
     category: String,
     title: String,
-    completed: Boolean,
+    completed: String,
     about: String,
   },
   data() {
     return {
       // idFromParam: this.$route.params.id,
+      // data: this.$route.params.data,
     };
   },
 };
