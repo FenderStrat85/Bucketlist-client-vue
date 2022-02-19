@@ -1,19 +1,13 @@
 <template>
   <div>
     <div v-if="category === 'Travel'">
-      <TravelGoalCard
-        :category="category"
-        :title="title"
-        :about="about"
-        :completed="completed"
-        v-bind="item"
-      />
+      <TravelGoalCard :id="id" />
     </div>
     <div v-if="category === 'Education'">
-      <EducationalGoalCard :category="category" :title="title" />
+      <EducationalGoalCard :id="id" />
     </div>
     <div v-if="category === 'Personal'">
-      <PersonalGoalCard :category="category" :title="title" />
+      <PersonalGoalCard :id="id" />
     </div>
   </div>
 </template>
@@ -29,9 +23,7 @@ export default {
   components: { PersonalGoalCard, EducationalGoalCard, TravelGoalCard },
   props: {
     category: String,
-    title: String,
-    completed: String,
-    about: String,
+    id: String,
   },
   data() {
     return {

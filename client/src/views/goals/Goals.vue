@@ -7,38 +7,15 @@
           :to="{
             name: 'GoalDetails',
             params: {
-              //All
               id: item._id,
               title: item.title,
               category: item.category,
-              about: item.about,
-              completed: item.completed,
-
-              //Travel
-              cloudinaryPhotoUrl: item.cloudinaryPhotoUrl,
-              latitude: item.latitude,
-              longitude: item.longitude,
-              country: item.country,
-              city: item.city,
-              dateCompleted: item.dateCompleted,
-
-              //Education
-              subject: item.subject,
-              reasonForLearning: item.reasonForLearning,
-
-              //Personal
-              areaOfLife: item.areaOfLife,
-              reasonForGoal: item.reasonForGoal,
-
-              //Education and Personal
-              desiredGoal: item.desiredGoal,
-              desiredCompletionDate: item.desiredCompletionDate,
-              completedOnTime: item.completedOnTime,
             },
           }"
         >
           <h2>{{ item.title }}</h2>
         </router-link>
+        <h3>{{ item.category }}</h3>
       </div>
     </div>
 
@@ -49,12 +26,14 @@
 </template>
 
 <script>
+import { useStore } from 'vuex';
 import { useQuery } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 
 export default {
   setup() {
-    const { result, loading, error } = useQuery(gql`
+    const store = useStore();
+    const { result, loading, error, onResult } = useQuery(gql`
       query getBucketListItems {
         getBucketListItems {
           __typename
@@ -76,18 +55,42 @@ export default {
             category
             title
             subject
+            about
+            completed
           }
           ... on PersonalBucketListItem {
             _id
             category
             title
             areaOfLife
+            about
+            completed
           }
         }
       }
     `);
-    // console.log('result', result);
-    // console.log('result.value', result.value);
+    //New plan => Take these results and send them to the store so that they can be accessed more easily in the goal details card
+    onResult((queryResult) => {
+      let travel = [];
+      let education = [];
+      let personal = [];
+      const bucketListItems = queryResult.data.getBucketListItems;
+      console.log(bucketListItems);
+      bucketListItems.forEach((item) => {
+        if (item.category === 'Travel') {
+          travel.push(item);
+        }
+        if (item.category === 'Education') {
+          education.push(item);
+        }
+        if (item.category === 'Personal') {
+          personal.push(item);
+        }
+      });
+      store.commit('populateTravelStore', travel);
+      store.commit('populateEducationStore', education);
+      store.commit('populatePersonalStore', personal);
+    });
     return {
       result,
       loading,
