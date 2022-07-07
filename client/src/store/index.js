@@ -11,6 +11,9 @@ const store = createStore({
     personalGoals: [],
   },
   getters: {
+    getUserId: (state) => {
+      return state._id;
+    },
     getTravelById: (state) => (id) => {
       return state.travelGoals.find((item) => item._id === id);
     },
@@ -21,6 +24,15 @@ const store = createStore({
       console.log(id);
       console.log(state.personalGoals);
       return state.personalGoals.find((item) => item._id === id);
+    },
+    getAllTravelGoals: (state) => {
+      return state.travelGoals;
+    },
+    getAllEducationalGoals: (state) => {
+      return state.educationGoals;
+    },
+    getAllPersonalGoals: (state) => {
+      return state.personalGoals;
     },
   },
   mutations: {

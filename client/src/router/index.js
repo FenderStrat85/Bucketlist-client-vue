@@ -5,9 +5,9 @@ import Login from '../views/Login.vue';
 import NotFound from '../views/NotFound.vue';
 import Goals from '../views/goals/Goals.vue';
 import GoalDetails from '../views/goals/GoalDetails.vue';
-import PersonalGoal from '../views/PersonalGoal.vue';
-import EducationalGoal from '../views/EducationalGoal';
-import TravelGoal from '../views/TravelGoal';
+import PersonalGoalForm from '../views/PersonalGoalForm.vue';
+import EducationalGoalForm from '../views/EducationalGoalForm';
+import TravelGoalForm from '../views/TravelGoalForm';
 
 //within router to access store you need to import from @/store.
 import store from '@/store';
@@ -30,18 +30,18 @@ const routes = [
   },
   {
     path: '/addpersonalgoal',
-    name: 'PersonalGoal',
-    component: PersonalGoal,
+    name: 'PersonalGoalForm',
+    component: PersonalGoalForm,
   },
   {
     path: '/addeducationalgoal',
-    name: 'EducationalGoal',
-    component: EducationalGoal,
+    name: 'EducationalGoalForm',
+    component: EducationalGoalForm,
   },
   {
     path: '/addtravelgoal',
-    name: 'TravelGoal',
-    component: TravelGoal,
+    name: 'TravelGoalForm',
+    component: TravelGoalForm,
   },
   {
     path: '/goals',

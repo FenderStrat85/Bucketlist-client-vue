@@ -35,25 +35,6 @@ export default {
       console.log(email.value);
       console.log(password.value);
     };
-
-    //dummy test data when setting up store
-    // const userInfoTest = {
-    //   _id: 1,
-    //   userEmail: '',
-    //   accessToken: 'TestAccessToken',
-    // };
-
-    // const userInfo = {
-    //   email: 'test@test.com',
-    //   password: '123',
-    // };
-
-    // const loginUserTest = (userInfo) => {
-    //   userInfo.userEmail = email.value;
-    //   store.commit('loginUser', userInfoTest);
-    // };
-    //variables need to be named after the type as defined in typedefs => loginInput in this case
-    // on line 51 => loginInput is the type $loginInput which is defined on the line above.
     const {
       mutate: loginUser,
       onDone,
@@ -90,27 +71,9 @@ export default {
       email,
       password,
       loginUser,
-      // loginUserTest,
-      // userInfo,
       state,
     };
   },
-  //using options api
-  // methods: {
-  //   loginUser(userInfo) {
-  //     console.log('loginUser function inside component', userInfo);
-  //     this.$store.commit('loginUser', userInfo);
-  //   },
-  // },
-  // computed: {
-  //   userInfo() {
-  //     return {
-  //       _id: 1,
-  //       userEmail: this.email,
-  //       accessToken: 'TestAccessToken',
-  //     };
-  //   },
-  // },
 };
 </script>
 

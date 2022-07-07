@@ -5,13 +5,15 @@
       <button @click="logout">Logout</button>
       <router-link :to="{ name: 'Home' }">Home</router-link>
       <router-link :to="{ name: 'Goals' }">Items</router-link>
-      <router-link :to="{ name: 'PersonalGoal' }"
+      <router-link :to="{ name: 'PersonalGoalForm' }"
         >Add Personal Goal</router-link
       >
-      <router-link :to="{ name: 'EducationalGoal' }"
+      <router-link :to="{ name: 'EducationalGoalForm' }"
         >Add Education Goal</router-link
       >
-      <router-link :to="{ name: 'TravelGoal' }">Add Travel Goal</router-link>
+      <router-link :to="{ name: 'TravelGoalForm' }"
+        >Add Travel Goal</router-link
+      >
     </div>
     <div v-if="!this.$store.state.isAuthenticated">
       <router-link :to="{ name: 'Signup' }">Sign Up</router-link>

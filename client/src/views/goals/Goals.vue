@@ -1,14 +1,14 @@
 <template>
   <div>
     <h1>I am the item list page</h1>
-    <div v-if="result">
-      <div v-for="item in result.getBucketListItems" :key="item._id">
+    <h2>Travel Goals</h2>
+    <div v-if="alltravelGoals.length > 0">
+      <div v-for="item in alltravelGoals" :key="item._id">
         <router-link
           :to="{
             name: 'GoalDetails',
             params: {
               id: item._id,
-              title: item.title,
               category: item.category,
             },
           }"
@@ -18,6 +18,58 @@
         <h3>{{ item.category }}</h3>
       </div>
     </div>
+
+    <h2>Educational Goals</h2>
+    <div v-if="allEducationalGoals.length > 0">
+      <div v-for="item in allEducationalGoals" :key="item._id">
+        <router-link
+          :to="{
+            name: 'GoalDetails',
+            params: {
+              id: item._id,
+              category: item.category,
+            },
+          }"
+        >
+          <h2>{{ item.title }}</h2>
+        </router-link>
+        <h3>{{ item.category }}</h3>
+      </div>
+    </div>
+
+    <h2>Personal Goals</h2>
+    <div v-if="allPersonalGoals.length > 0">
+      <div v-for="item in allPersonalGoals" :key="item._id">
+        <router-link
+          :to="{
+            name: 'GoalDetails',
+            params: {
+              id: item._id,
+              category: item.category,
+            },
+          }"
+        >
+          <h2>{{ item.title }}</h2>
+        </router-link>
+        <h3>{{ item.category }}</h3>
+      </div>
+    </div>
+    <!-- <div v-if="result">
+      <div v-for="item in result.getBucketListItems" :key="item._id">
+        <router-link
+          :to="{
+            name: 'GoalDetails',
+            params: {
+              id: item._id,
+              category: item.category,
+            },
+          }"
+        >
+          <h2>{{ item.title }}</h2>
+        </router-link>
+        <h3>{{ item.category }}</h3>
+      </div>
+    </div> -->
 
     <div v-if="loading">Loading...</div>
 
@@ -69,7 +121,6 @@ export default {
         }
       }
     `);
-    //New plan => Take these results and send them to the store so that they can be accessed more easily in the goal details card
     onResult((queryResult) => {
       let travel = [];
       let education = [];
@@ -91,10 +142,16 @@ export default {
       store.commit('populateEducationStore', education);
       store.commit('populatePersonalStore', personal);
     });
+    const alltravelGoals = store.getters.getAllTravelGoals;
+    const allEducationalGoals = store.getters.getAllEducationalGoals;
+    const allPersonalGoals = store.getters.getAllPersonalGoals;
     return {
       result,
       loading,
       error,
+      alltravelGoals,
+      allEducationalGoals,
+      allPersonalGoals,
     };
   },
 };
