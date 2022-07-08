@@ -67,6 +67,9 @@ const store = createStore({
     populatePersonalStore(state, payload) {
       state.personalGoals = payload;
     },
+    addEducationalGoal(state, payload) {
+      state.educationGoals.push(payload);
+    },
     addPersonalGoal(state, payload) {
       state.personalGoals.push(payload);
     },
