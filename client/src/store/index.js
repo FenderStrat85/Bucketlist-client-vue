@@ -6,6 +6,7 @@ const store = createStore({
     accessToken: null,
     firstName: null,
     isAuthenticated: false,
+    dataIsLoaded: false,
     travelGoals: [],
     educationGoals: [],
     personalGoals: [],
@@ -13,6 +14,9 @@ const store = createStore({
   getters: {
     getUserId: (state) => {
       return state._id;
+    },
+    getDataLoadedStatus: (state) => {
+      return state.dataIsLoaded;
     },
     getTravelById: (state) => (id) => {
       return state.travelGoals.find((item) => item._id === id);
@@ -51,6 +55,9 @@ const store = createStore({
     logoutUser(state) {
       state.isAuthenticated = false;
     },
+    setDataLoadedToTrue(state, payload) {
+      state.dataIsLoaded = payload;
+    },
     populateTravelStore(state, payload) {
       state.travelGoals = payload;
     },
@@ -59,6 +66,9 @@ const store = createStore({
     },
     populatePersonalStore(state, payload) {
       state.personalGoals = payload;
+    },
+    addPersonalGoal(state, payload) {
+      state.personalGoals.push(payload);
     },
   },
 });

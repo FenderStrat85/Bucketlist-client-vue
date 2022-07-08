@@ -67,23 +67,23 @@
         v-model="completed"
       />
       <label for="completed">Not Completed</label>
-
-      <span>If already completed, did you complete it on time?</span>
-      <span>If completed, did you complete this goal on time?</span>
-      <label for="completedOnTime">Completed on time</label>
-      <input
-        type="radio"
-        id="completedOnTime"
-        v-bind:value="true"
-        v-model="completedOnTime"
-      />
-      <label for="completedOnTime">Not completed on time</label>
-      <input
-        type="radio"
-        id="notCompletedOnTime"
-        v-bind:value="false"
-        v-model="completedOnTime"
-      />
+      <div v-if="completed">
+        <span>If completed, did you complete this goal on time?</span>
+        <label for="completedOnTime">Completed on time</label>
+        <input
+          type="radio"
+          id="completedOnTime"
+          v-bind:value="true"
+          v-model="completedOnTime"
+        />
+        <label for="completedOnTime">Not completed on time</label>
+        <input
+          type="radio"
+          id="notCompletedOnTime"
+          v-bind:value="false"
+          v-model="completedOnTime"
+        />
+      </div>
       <button>Submit</button>
     </form>
     <div v-if="state.showErrorMessage">
@@ -100,10 +100,12 @@ import { useRouter } from 'vue-router';
 import { personalGoalFormPlaceholders } from '../constants/formPlaceholders';
 import { categories } from '../constants/categories';
 import { logErrorMessages } from '@vue/apollo-util';
+import { useStore } from 'vuex';
 
 export default {
   setup() {
     const router = useRouter();
+    const store = useStore();
     const state = reactive({
       showErrorMessage: false,
     });
@@ -127,7 +129,17 @@ export default {
           $personalItemInput: PersonalBucketListInput
         ) {
           addPersonalBucketListItem(personalItemInput: $personalItemInput) {
-            message
+            _id
+            userId
+            category
+            title
+            about
+            areaOfLife
+            desiredGoal
+            reasonForGoal
+            desiredCompletionDate
+            completed
+            completedOnTime
           }
         }
       `,
@@ -148,11 +160,13 @@ export default {
       }),
     );
     onDone((result) => {
-      console.log('RESULT', result);
-      router.push('/goals');
+      console.log('RESULT.data', result.data);
+      store.commit('addPersonalGoal', result.data.addPersonalBucketListItem);
+      router.push('/');
     });
     onError((e) => {
       logErrorMessages(e);
+      // shows the full error from grpahql
       console.log(JSON.stringify(e, null, 2));
       state.showErrorMessage = true;
     });
