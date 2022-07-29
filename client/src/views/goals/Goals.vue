@@ -18,8 +18,8 @@
         <h3>{{ item.category }}</h3>
       </div>
     </div>
-    <div v-if="alltravelGoals.length > 0 && dataIsLoaded">
-      <div v-for="item in alltravelGoals" :key="item._id">
+    <div v-if="allTravelGoals.length > 0 && dataIsLoaded">
+      <div v-for="item in allTravelGoals" :key="item._id">
         <router-link
           :to="{
             name: 'GoalDetails',
@@ -34,7 +34,7 @@
         <h3>{{ item.category }}</h3>
       </div>
     </div>
-    <div v-if="alltravelGoals.length === 0 && dataIsLoaded">
+    <div v-if="allTravelGoals.length === 0 && dataIsLoaded">
       <h3>You have no travel goals, go and add some</h3>
     </div>
 
@@ -186,7 +186,7 @@ export default {
       store.commit('setDataLoadedToTrue', true);
     });
 
-    const alltravelGoals = store.getters.getAllTravelGoals;
+    const allTravelGoals = store.getters.getAllTravelGoals;
     const allEducationalGoals = store.getters.getAllEducationalGoals;
     const allPersonalGoals = store.getters.getAllPersonalGoals;
     return {
@@ -197,7 +197,7 @@ export default {
       dataIsLoaded,
       loading,
       error,
-      alltravelGoals,
+      allTravelGoals,
       allEducationalGoals,
       allPersonalGoals,
     };

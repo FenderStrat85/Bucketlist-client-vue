@@ -73,6 +73,10 @@ const store = createStore({
     addPersonalGoal(state, payload) {
       state.personalGoals.push(payload);
     },
+    removeEducationalGoal(state, payload) {
+      let index = state.educationGoals.findIndex((item) => item.id === payload);
+      state.educationGoals.splice(index, 1);
+    },
   },
 });
 
