@@ -153,6 +153,10 @@ export default {
             title
             subject
             about
+            desiredGoal
+            reasonForLearning
+            desiredCompletionDate
+            completedOnTime
             completed
           }
           ... on PersonalBucketListItem {
