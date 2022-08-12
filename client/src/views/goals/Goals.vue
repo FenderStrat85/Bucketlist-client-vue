@@ -174,13 +174,13 @@ export default {
       const bucketListItems = queryResult.data.getBucketListItems;
       console.log(bucketListItems);
       bucketListItems.forEach((item) => {
-        if (item.category === 'Travel') {
+        if (item && item.category && item.category === 'Travel') {
           travel.push(item);
         }
-        if (item.category === 'Education') {
+        if (item && item.category && item.category === 'Education') {
           education.push(item);
         }
-        if (item.category === 'Personal') {
+        if (item && item.category && item.category === 'Personal') {
           personal.push(item);
         }
       });

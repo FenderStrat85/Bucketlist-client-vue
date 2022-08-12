@@ -107,7 +107,7 @@ import { reactive, ref } from 'vue';
 import { useMutation } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import { useRouter } from 'vue-router';
-import { categories } from '../constants/categories';
+import { categories, storeCategories } from '../constants/categories';
 export default {
   props: {
     id: String,
@@ -188,10 +188,10 @@ export default {
       }),
     );
     onDoneUpdate((result) => {
-      store.commit(
-        'updateEducationalGoal',
-        result.data.updateEducationalBucketListItem,
-      );
+      store.commit('updateGoal', {
+        data: result.data.updateEducationalBucketListItem,
+        category: storeCategories.EDUCATIONAL,
+      });
       router.push('/');
     });
     onErrorUpdate((e) => {
@@ -222,12 +222,15 @@ export default {
       }),
     );
     onDoneDelete((result) => {
-      console.log(result);
-      store.commit('removeEducationalGoal', props.id);
+      console.log('result!!!!', result);
+      store.commit('removeGoal', {
+        id: props.id,
+        category: storeCategories.EDUCATIONAL,
+      });
       router.push('/');
     });
     onErrorDelete((e) => {
-      console.log(JSON.stringify(e, null, 2));
+      console.error(e);
       state.showErrorMessage = true;
     });
     return {
