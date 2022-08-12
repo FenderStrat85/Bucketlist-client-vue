@@ -70,12 +70,24 @@ const store = createStore({
     addEducationalGoal(state, payload) {
       state.educationGoals.push(payload);
     },
-    addPersonalGoal(state, payload) {
-      state.personalGoals.push(payload);
+    updateEducationalGoal(state, payload) {
+      let index = state.educationGoals.findIndex(
+        (item) => item._id === payload._id,
+      );
+      state.educationGoals[index] = payload;
     },
     removeEducationalGoal(state, payload) {
       let index = state.educationGoals.findIndex((item) => item.id === payload);
       state.educationGoals.splice(index, 1);
+    },
+    addPersonalGoal(state, payload) {
+      state.personalGoals.push(payload);
+    },
+    updatePersonalGoal(state, payload) {
+      let index = state.personalGoals.findIndex(
+        (item) => item._id === payload._id,
+      );
+      state.personalGoals.splice(index, 1);
     },
   },
 });

@@ -169,7 +169,7 @@ export default {
     });
     onError((e) => {
       logErrorMessages(e);
-      // shows the full error from grpahql
+      // shows the full error from graphql
       console.log(JSON.stringify(e, null, 2));
       state.showErrorMessage = true;
     });

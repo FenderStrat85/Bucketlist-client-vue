@@ -6,14 +6,14 @@
       <h2>Completed? {{ educationalGoal.completed }}</h2>
       <h2>About: {{ educationalGoal.about }}</h2>
       <button @click="deleteBucketListItem()">Delete Goal</button>
-      <button @click="setToEditMode()">Edit your goal</button>
       <div v-if="state.showErrorMessage">
         <h2>There has been an error deleting this item</h2>
       </div>
+      <button @click="setToEditMode()">Edit your goal</button>
     </div>
     <div v-if="state.isInEditMode">
       <h1>I am the Educational Goal Form</h1>
-      <form @submit.prevent="editEducationalBucketListItem()">
+      <form @submit.prevent="updateEducationalBucketListItem()">
         <label for="title">Title: </label>
         <textarea
           type="text"
@@ -107,6 +107,7 @@ import { reactive, ref } from 'vue';
 import { useMutation } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import { useRouter } from 'vue-router';
+import { categories } from '../constants/categories';
 export default {
   props: {
     id: String,
@@ -142,13 +143,67 @@ export default {
 
     const setToEditMode = () => (state.isInEditMode = true);
     const exitEditMode = () => (state.isInEditMode = false);
-    const editEducationalBucketListItem = () => {
-      console.log('submitted');
-    };
+
+    const {
+      mutate: updateEducationalBucketListItem,
+      onDone: onDoneUpdate,
+      onError: onErrorUpdate,
+    } = useMutation(
+      gql`
+        mutation updateEducationalBucketListItem(
+          $educationalItemInput: EducationalBucketListInput
+        ) {
+          updateEducationalBucketListItem(
+            educationalItemInput: $educationalItemInput
+          ) {
+            _id
+            userId
+            category
+            title
+            about
+            subject
+            desiredGoal
+            reasonForLearning
+            desiredCompletionDate
+            completed
+            completedOnTime
+          }
+        }
+      `,
+      () => ({
+        variables: {
+          educationalItemInput: {
+            _id: educationalGoal._id,
+            category: categories.EDUCATIONAL,
+            title: title.value,
+            about: about.value,
+            subject: subject.value,
+            desiredGoal: desiredGoal.value,
+            reasonForLearning: reasonForLearning.value,
+            desiredCompletionDate: desiredCompletionDate.value,
+            completed: completed.value,
+            completedOnTime: completedOnTime.value,
+          },
+        },
+      }),
+    );
+    onDoneUpdate((result) => {
+      store.commit(
+        'updateEducationalGoal',
+        result.data.updateEducationalBucketListItem,
+      );
+      router.push('/');
+    });
+    onErrorUpdate((e) => {
+      // shows the full error from graphql
+      console.log(JSON.stringify(e, null, 2));
+      state.showErrorMessage = true;
+    });
+
     const {
       mutate: deleteBucketListItem,
-      onDone,
-      onError,
+      onDone: onDoneDelete,
+      onError: onErrorDelete,
     } = useMutation(
       gql`
         mutation deleteBucketListItem($deleteItemInput: DeleteItemInput) {
@@ -166,12 +221,12 @@ export default {
         },
       }),
     );
-    onDone((result) => {
+    onDoneDelete((result) => {
       console.log(result);
       store.commit('removeEducationalGoal', props.id);
       router.push('/');
     });
-    onError((e) => {
+    onErrorDelete((e) => {
       console.log(JSON.stringify(e, null, 2));
       state.showErrorMessage = true;
     });
@@ -180,7 +235,7 @@ export default {
       deleteBucketListItem,
       setToEditMode,
       exitEditMode,
-      editEducationalBucketListItem,
+      updateEducationalBucketListItem,
       title,
       about,
       subject,
