@@ -98,7 +98,7 @@ import { useMutation } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import { useRouter } from 'vue-router';
 import { personalGoalFormPlaceholders } from '../constants/formPlaceholders';
-import { categories } from '../constants/categories';
+import { categories, storeCategories } from '../constants/categories';
 import { logErrorMessages } from '@vue/apollo-util';
 import { useStore } from 'vuex';
 
@@ -161,7 +161,10 @@ export default {
     );
     onDone((result) => {
       console.log('RESULT.data', result.data);
-      store.commit('addPersonalGoal', result.data.addPersonalBucketListItem);
+      store.commit('addGoal', {
+        category: storeCategories.PERSONAL,
+        data: result.data.addPersonalBucketListItem,
+      });
       router.push('/');
     });
     onError((e) => {

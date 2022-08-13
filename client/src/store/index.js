@@ -58,20 +58,11 @@ const store = createStore({
     setDataLoadedToTrue(state, payload) {
       state.dataIsLoaded = payload;
     },
-    populateTravelStore(state, payload) {
-      state.travelGoals = payload;
+    populateStore(state, payload) {
+      state[payload.category] = payload.data;
     },
-    populateEducationStore(state, payload) {
-      state.educationGoals = payload;
-    },
-    populatePersonalStore(state, payload) {
-      state.personalGoals = payload;
-    },
-    addEducationalGoal(state, payload) {
-      state.educationGoals.push(payload);
-    },
-    addPersonalGoal(state, payload) {
-      state.personalGoals.push(payload);
+    addGoal(state, payload) {
+      state[payload.category].push(payload.data);
     },
     updateGoal(state, payload) {
       let index = state[payload.category].findIndex(

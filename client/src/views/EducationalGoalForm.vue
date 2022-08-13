@@ -96,7 +96,7 @@ import { useMutation } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import { useRouter } from 'vue-router';
 import { personalGoalFormPlaceholders } from '../constants/formPlaceholders';
-import { categories } from '../constants/categories';
+import { categories, storeCategories } from '../constants/categories';
 import { logErrorMessages } from '@vue/apollo-util';
 import { useStore } from 'vuex';
 
@@ -161,10 +161,10 @@ export default {
       }),
     );
     onDone((result) => {
-      store.commit(
-        'addEducationalGoal',
-        result.data.addEducationalBucketListItem,
-      );
+      store.commit('addGoal', {
+        category: storeCategories.EDUCATIONAL,
+        data: result.data.addEducationalBucketListItem,
+      });
       router.push('/');
     });
     onError((e) => {

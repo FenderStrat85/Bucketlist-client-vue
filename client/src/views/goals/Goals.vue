@@ -122,6 +122,7 @@
 import { useStore } from 'vuex';
 import { useQuery } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
+import { storeCategories } from '../../constants/categories';
 
 export default {
   setup() {
@@ -184,9 +185,18 @@ export default {
           personal.push(item);
         }
       });
-      store.commit('populateTravelStore', travel);
-      store.commit('populateEducationStore', education);
-      store.commit('populatePersonalStore', personal);
+      store.commit('populateStore', {
+        category: storeCategories.TRAVEL,
+        data: travel,
+      });
+      store.commit('populateStore', {
+        category: storeCategories.EDUCATIONAL,
+        data: education,
+      });
+      store.commit('populateStore', {
+        category: storeCategories.PERSONAL,
+        data: personal,
+      });
       store.commit('setDataLoadedToTrue', true);
     });
 
