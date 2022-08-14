@@ -109,7 +109,7 @@ import { useMutation } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import { reactive, ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { storeCategories } from '../constants/categories';
+import { categories, storeCategories } from '../constants/categories';
 export default {
   props: {
     id: String,
@@ -123,6 +123,7 @@ export default {
     });
     const personalGoal = store.getters.getPersonalById(props.id);
 
+    console.log('personalGaol!!!', personalGoal);
     const placeholders = {
       title: personalGoal.title,
       about: personalGoal.about,
@@ -145,6 +146,60 @@ export default {
 
     const setToEditMode = () => (state.isInEditMode = true);
     const exitEditMode = () => (state.isInEditMode = false);
+
+    const {
+      mutate: updatePersonalBucketListItem,
+      onDone: onDoneUpdate,
+      onError: onErrorUpdate,
+    } = useMutation(
+      gql`
+        mutation updatePersonalBucketListItem(
+          $personalItemInput: PersonalBucketListInput
+        ) {
+          updatePersonalBucketListItem(personalItemInput: $personalItemInput) {
+            _id
+            userId
+            category
+            title
+            about
+            areaOfLife
+            desiredGoal
+            reasonForGoal
+            desiredCompletionDate
+            completed
+            completedOnTime
+          }
+        }
+      `,
+      () => ({
+        variables: {
+          personalItemInput: {
+            _id: personalGoal._id,
+            category: categories.PERSONAL,
+            title: title.value,
+            about: about.value,
+            areaOfLife: areaOfLife.value,
+            desiredGoal: desiredGoal.value,
+            reasonForGoal: reasonForGoal.value,
+            desiredCompletionDate: desiredCompletionDate.value,
+            completed: completed.value,
+            completedOnTime: completedOnTime.value,
+          },
+        },
+      }),
+    );
+    onDoneUpdate((result) => {
+      store.commit('updateGoal', {
+        data: result.data.updatePersonalBucketListItem,
+        category: storeCategories.PERSONAL,
+      });
+      router.push('/');
+    });
+    onErrorUpdate((e) => {
+      // shows the full error from graphql
+      console.log(JSON.stringify(e, null, 2));
+      state.showErrorMessage = true;
+    });
 
     const {
       mutate: deleteBucketListItem,
@@ -181,6 +236,7 @@ export default {
     return {
       personalGoal,
       deleteBucketListItem,
+      updatePersonalBucketListItem,
       placeholders,
       title,
       about,

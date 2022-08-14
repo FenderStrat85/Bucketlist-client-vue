@@ -66,13 +66,13 @@ const store = createStore({
     },
     updateGoal(state, payload) {
       let index = state[payload.category].findIndex(
-        (item) => item._id === payload._id,
+        (item) => item._id === payload.data._id,
       );
       state[payload.category][index] = payload.data;
     },
     removeGoal(state, payload) {
       let index = state[payload.category].findIndex(
-        (item) => item.id === payload.id,
+        (item) => item.id === payload.data.id,
         state[payload.category].splice(index, 1),
       );
     },

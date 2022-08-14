@@ -188,6 +188,7 @@ export default {
       }),
     );
     onDoneUpdate((result) => {
+      console.log(result);
       store.commit('updateGoal', {
         data: result.data.updateEducationalBucketListItem,
         category: storeCategories.EDUCATIONAL,
