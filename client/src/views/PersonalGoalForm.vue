@@ -45,7 +45,7 @@
         required
       />
       <label for="desiredCompletionDate">Desired completion date: </label>
-      <Datepicker v-model="date" inline autoApply />
+      <Datepicker v-model="desiredCompletionDate" inline autoApply />
       <span>Have you completed this goal?</span>
       <input
         type="radio"
