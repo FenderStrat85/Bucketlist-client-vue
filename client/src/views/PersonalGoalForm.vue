@@ -45,13 +45,7 @@
         required
       />
       <label for="desiredCompletionDate">Desired completion date: </label>
-      <textarea
-        type="text"
-        name="desiredCompletionDate"
-        v-model="desiredCompletionDate"
-        :placeholder="placeholders.desiredCompletionDate"
-        required
-      />
+      <Datepicker v-model="date" inline autoApply />
       <span>Have you completed this goal?</span>
       <input
         type="radio"
@@ -115,7 +109,7 @@ export default {
     const areaOfLife = ref('');
     const desiredGoal = ref('');
     const reasonForGoal = ref('');
-    const desiredCompletionDate = ref('');
+    const desiredCompletionDate = ref();
     const completed = ref(false);
     const completedOnTime = ref(false);
 
