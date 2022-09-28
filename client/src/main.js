@@ -2,8 +2,6 @@ import { createApp, provide, h } from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store/index';
-import Datepicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css';
 
 import {
   ApolloClient,
@@ -57,4 +55,4 @@ const app = createApp({
   render: () => h(App),
 });
 
-app.component('Datepicker', Datepicker).use(router).use(store).mount('#app');
+app.use(router).use(store).mount('#app');

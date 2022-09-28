@@ -43,11 +43,11 @@
         required
       />
       <label for="desiredCompletionDate">Desired completion date: </label>
-      <textarea
-        type="text"
-        name="desiredCompletionDate"
+      <Datepicker
         v-model="desiredCompletionDate"
-        :placeholder="placeholders.desiredCompletionDate"
+        placeholder="Start Typing ..."
+        textInput
+        :minDate="new Date()"
         required
       />
       <span>Have you completed this goal?</span>
@@ -99,8 +99,13 @@ import { personalGoalFormPlaceholders } from '../constants/formPlaceholders';
 import { categories, storeCategories } from '../constants/categories';
 import { logErrorMessages } from '@vue/apollo-util';
 import { useStore } from 'vuex';
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
 
 export default {
+  components: {
+    Datepicker,
+  },
   setup() {
     const router = useRouter();
     const store = useStore();
@@ -185,6 +190,7 @@ export default {
       completedOnTime,
       addEducationalBucketListItem,
       state,
+      Datepicker,
     };
   },
 };

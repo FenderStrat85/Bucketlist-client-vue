@@ -49,7 +49,7 @@ const routes = [
     component: Goals,
   },
   {
-    path: '/goals/:id',
+    path: '/goals/:category/:id',
     name: 'GoalDetails',
     component: GoalDetails,
     props: true,

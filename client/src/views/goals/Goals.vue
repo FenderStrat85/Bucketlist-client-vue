@@ -4,15 +4,7 @@
     <h2>Travel Goals</h2>
     <div v-if="result && !dataIsLoaded">
       <div v-for="item in travel" :key="item._id">
-        <router-link
-          :to="{
-            name: 'GoalDetails',
-            params: {
-              id: item._id,
-              category: item.category,
-            },
-          }"
-        >
+        <router-link :to="`goals/travel/${item._id}`">
           <h2>{{ item.title }}</h2>
         </router-link>
         <h3>{{ item.category }}</h3>
@@ -20,15 +12,7 @@
     </div>
     <div v-if="allTravelGoals.length > 0 && dataIsLoaded">
       <div v-for="item in allTravelGoals" :key="item._id">
-        <router-link
-          :to="{
-            name: 'GoalDetails',
-            params: {
-              id: item._id,
-              category: item.category,
-            },
-          }"
-        >
+        <router-link :to="`goals/travel/${item._id}`">
           <h2>{{ item.title }}</h2>
         </router-link>
         <h3>{{ item.category }}</h3>
@@ -41,15 +25,7 @@
     <h2>Educational Goals</h2>
     <div v-if="result && !dataIsLoaded">
       <div v-for="item in education" :key="item._id">
-        <router-link
-          :to="{
-            name: 'GoalDetails',
-            params: {
-              id: item._id,
-              category: item.category,
-            },
-          }"
-        >
+        <router-link :to="`goals/education/${item._id}`">
           <h2>{{ item.title }}</h2>
         </router-link>
         <h3>{{ item.category }}</h3>
@@ -57,15 +33,7 @@
     </div>
     <div v-if="allEducationalGoals.length > 0 && dataIsLoaded">
       <div v-for="item in allEducationalGoals" :key="item._id">
-        <router-link
-          :to="{
-            name: 'GoalDetails',
-            params: {
-              id: item._id,
-              category: item.category,
-            },
-          }"
-        >
+        <router-link :to="`goals/education/${item._id}`">
           <h2>{{ item.title }}</h2>
         </router-link>
         <h3>{{ item.category }}</h3>
@@ -78,15 +46,7 @@
     <h2>Personal Goals</h2>
     <div v-if="result && !dataIsLoaded">
       <div v-for="item in personal" :key="item._id">
-        <router-link
-          :to="{
-            name: 'GoalDetails',
-            params: {
-              id: item._id,
-              category: item.category,
-            },
-          }"
-        >
+        <router-link :to="`goals/personal/${item._id}`">
           <h2>{{ item.title }}</h2>
         </router-link>
         <h3>{{ item.category }}</h3>
@@ -94,15 +54,7 @@
     </div>
     <div v-if="allPersonalGoals.length > 0 && dataIsLoaded">
       <div v-for="item in allPersonalGoals" :key="item._id">
-        <router-link
-          :to="{
-            name: 'GoalDetails',
-            params: {
-              id: item._id,
-              category: item.category,
-            },
-          }"
-        >
+        <router-link :to="`goals/personal/${item._id}`">
           <h2>{{ item.title }}</h2>
         </router-link>
         <h3>{{ item.category }}</h3>
@@ -166,7 +118,11 @@ export default {
             title
             areaOfLife
             about
+            desiredGoal
+            reasonForGoal
+            desiredCompletionDate
             completed
+            completedOnTime
           }
         }
       }

@@ -5,6 +5,14 @@
       <h2>The title is: {{ educationalGoal.title }}</h2>
       <h2>Completed? {{ educationalGoal.completed }}</h2>
       <h2>About: {{ educationalGoal.about }}</h2>
+      <div>
+        <h2>Date to finish:</h2>
+        <Datepicker
+          v-model="desiredCompletionDate"
+          autoApply
+          :format="format"
+        />
+      </div>
       <button @click="deleteBucketListItem()">Delete Goal</button>
       <div v-if="state.showErrorMessage">
         <h2>There has been an error deleting this item</h2>
@@ -55,11 +63,11 @@
           required
         />
         <label for="desiredCompletionDate">Desired completion date: </label>
-        <textarea
-          type="text"
-          name="desiredCompletionDate"
+        <Datepicker
           v-model="desiredCompletionDate"
-          :placeholder="placeholders.desiredCompletionDate"
+          placeholder="placeholders.desiredCompletionDate"
+          textInput
+          :minDate="new Date()"
           required
         />
         <span>Have you completed this goal?</span>
@@ -108,9 +116,15 @@ import { useMutation } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import { useRouter } from 'vue-router';
 import { categories, storeCategories } from '../constants/categories';
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
+
 export default {
   props: {
     id: String,
+  },
+  components: {
+    Datepicker,
   },
   setup(props) {
     const router = useRouter();
@@ -143,6 +157,13 @@ export default {
 
     const setToEditMode = () => (state.isInEditMode = true);
     const exitEditMode = () => (state.isInEditMode = false);
+
+    const format = () => {
+      const date = new Date(educationalGoal.desiredCompletionDate);
+      return `You want to complete this goal by: ${date.getDate()}/${
+        date.getMonth() + 1
+      }/${date.getFullYear()}`;
+    };
 
     const {
       mutate: updateEducationalBucketListItem,
@@ -250,6 +271,8 @@ export default {
       completedOnTime,
       placeholders,
       state,
+      Datepicker,
+      format,
     };
   },
 };

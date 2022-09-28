@@ -45,7 +45,13 @@
         required
       />
       <label for="desiredCompletionDate">Desired completion date: </label>
-      <Datepicker v-model="desiredCompletionDate" inline autoApply />
+      <Datepicker
+        v-model="desiredCompletionDate"
+        placeholder="Start Typing ..."
+        textInput
+        :minDate="new Date()"
+        required
+      />
       <span>Have you completed this goal?</span>
       <input
         type="radio"
@@ -95,8 +101,13 @@ import { personalGoalFormPlaceholders } from '../constants/formPlaceholders';
 import { categories, storeCategories } from '../constants/categories';
 import { logErrorMessages } from '@vue/apollo-util';
 import { useStore } from 'vuex';
+import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
 
 export default {
+  components: {
+    Datepicker,
+  },
   setup() {
     const router = useRouter();
     const store = useStore();
@@ -180,6 +191,7 @@ export default {
       completedOnTime,
       addPersonalBucketListItem,
       state,
+      Datepicker,
     };
   },
 };
