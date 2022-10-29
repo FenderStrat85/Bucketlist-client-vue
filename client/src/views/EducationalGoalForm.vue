@@ -95,7 +95,7 @@ import { ref, reactive } from 'vue';
 import { useMutation } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import { useRouter } from 'vue-router';
-import { personalGoalFormPlaceholders } from '../constants/formPlaceholders';
+import { goalFormPlaceholders } from '../constants/formPlaceholders';
 import { categories, storeCategories } from '../constants/categories';
 import { logErrorMessages } from '@vue/apollo-util';
 import { useStore } from 'vuex';
@@ -112,7 +112,7 @@ export default {
     const state = reactive({
       showErrorMessage: false,
     });
-    const placeholders = personalGoalFormPlaceholders;
+    const placeholders = goalFormPlaceholders;
 
     const title = ref('');
     const about = ref('');

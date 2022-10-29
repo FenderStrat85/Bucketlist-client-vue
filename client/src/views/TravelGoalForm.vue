@@ -2,62 +2,113 @@
   <div>
     <h1>I am the Travel Goal Form</h1>
     <div>
-      <h4>Your Position</h4>
-      latitude: {{ currentPosition.lat.toFixed(2) }}, Longitude:
-      {{ currentPosition.lng.toFixed(2) }}
+      <span>Click the map to select a position => {{ state.myLatLng }}</span>
     </div>
-    <div>
-      <h4>Clicked Position</h4>
-      <span v-if="otherPos">
-        latitude: {{ otherPos.lat.toFixed(2) }}, Longitude:
-        {{ otherPos.lng.toFixed(2) }}
-      </span>
-      <span v-else>Click the map to select a position</span>
-    </div>
-    <div class="pac-card" id="pac-card">
+    <form @submit.prevent="addTravelBucketListItem()">
+      <label for="title">Title: </label>
+      <textarea
+        type="text"
+        name="title"
+        v-model="title"
+        :placeholder="placeholders.title"
+        required
+      />
+      <label for="about">About: </label>
+      <textarea
+        type="text"
+        name="about"
+        v-model="about"
+        :placeholder="placeholders.about"
+        required
+      />
+      <span>What country?</span>
+      <input
+        type="text"
+        name="country"
+        v-model="country"
+        :placeholder="placeholders.country"
+      />
+      <span>What city?</span>
+      <input
+        type="text"
+        name="city"
+        v-model="city"
+        :placeholder="placeholders.city"
+      />
+      <span>Have you completed this goal?</span>
+      <input
+        type="radio"
+        id="completed"
+        v-bind:value="true"
+        v-model="completed"
+      />
+      <label for="completed">Completed</label>
+      <input
+        type="radio"
+        id="notCompleted"
+        v-bind:value="false"
+        v-model="completed"
+      />
+      <label for="completed">Not Completed</label>
+
+      <div id="map-display">
+        <div class="pac-card" style="width: 70%" id="pac-card">
+          <div>
+            <div id="title">Autocomplete search</div>
+            <div id="type-selector" class="pac-controls">
+              <input
+                type="radio"
+                name="type"
+                id="changetype-all"
+                checked="checked"
+              />
+              <label for="changetype-all">All</label>
+
+              <input type="radio" name="type" id="changetype-establishment" />
+              <label for="changetype-establishment">establishment</label>
+
+              <input type="radio" name="type" id="changetype-address" />
+              <label for="changetype-address">address</label>
+
+              <input type="radio" name="type" id="changetype-geocode" />
+              <label for="changetype-geocode">geocode</label>
+
+              <input type="radio" name="type" id="changetype-cities" />
+              <label for="changetype-cities">(cities)</label>
+
+              <input type="radio" name="type" id="changetype-regions" />
+              <label for="changetype-regions">(regions)</label>
+            </div>
+            <br />
+            <div id="strict-bounds-selector" class="pac-controls">
+              <input type="checkbox" id="use-location-bias" value="" checked />
+              <label for="use-location-bias">Bias to map viewport</label>
+
+              <input type="checkbox" id="use-strict-bounds" value="" />
+              <label for="use-strict-bounds">Strict bounds</label>
+            </div>
+          </div>
+          <div id="pac-container">
+            <input id="pac-input" type="text" placeholder="Enter a location" />
+          </div>
+        </div>
+        <div id="map" style="width: 70%; height: 40vh"></div>
+        <div id="infowindow-content">
+          <span id="place-name" class="title"></span><br />
+          <span id="place-address"></span>
+        </div>
+      </div>
       <div>
-        <div id="title">Autocomplete search</div>
-        <div id="type-selector" class="pac-controls">
-          <input
-            type="radio"
-            name="type"
-            id="changetype-all"
-            checked="checked"
-          />
-          <label for="changetype-all">All</label>
-
-          <input type="radio" name="type" id="changetype-establishment" />
-          <label for="changetype-establishment">establishment</label>
-
-          <input type="radio" name="type" id="changetype-address" />
-          <label for="changetype-address">address</label>
-
-          <input type="radio" name="type" id="changetype-geocode" />
-          <label for="changetype-geocode">geocode</label>
-
-          <input type="radio" name="type" id="changetype-cities" />
-          <label for="changetype-cities">(cities)</label>
-
-          <input type="radio" name="type" id="changetype-regions" />
-          <label for="changetype-regions">(regions)</label>
+        <div v-if="state.newMapLocationSelected">
+          <button>Submit</button>
         </div>
-        <br />
-        <div id="strict-bounds-selector" class="pac-controls">
-          <input type="checkbox" id="use-location-bias" value="" checked />
-          <label for="use-location-bias">Bias to map viewport</label>
-
-          <input type="checkbox" id="use-strict-bounds" value="" />
-          <label for="use-strict-bounds">Strict bounds</label>
+        <div v-else>
+          <button disabled>Submit</button>
         </div>
       </div>
-      <div id="pac-container">
-        <input id="pac-input" type="text" placeholder="Enter a location" />
-      </div>
-    </div>
-    <div id="map" style="width: 100%; height: 80vh"></div>
-    <div id="infowindow-content">
-      <span id="place-name" class="title"></span><br />
-      <span id="place-address"></span>
+    </form>
+    <div v-if="state.showErrorMessage">
+      <h2>There has been an error submitting your goal</h2>
     </div>
   </div>
 </template>
@@ -65,18 +116,40 @@
 <script>
 /* eslint-disable no-undef */
 // needs above to allow google maps to load
-import { ref, computed } from 'vue';
+import { computed, reactive, ref } from 'vue';
 import { Loader } from '@googlemaps/js-api-loader';
 import { onMounted, onUnmounted } from '@vue/runtime-core';
-// import { useGeolocation } from '../constants/useGeolocation';
+import { goalFormPlaceholders } from '../constants/formPlaceholders';
+import gql from 'graphql-tag';
+import { useMutation } from '@vue/apollo-composable';
+import { categories, storeCategories } from '../constants/categories';
+import { logErrorMessages } from '@vue/apollo-util';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+
 export default {
   setup() {
-    // const { coords } = useGeolocation();
-    const currentPosition = computed(() => ({
+    const router = useRouter();
+    const store = useStore();
+    const state = reactive({
+      myLatLng: { lat: 0, lng: 0 },
+      showErrorMessage: false,
+      newMapLocationSelected: false,
+    });
+
+    const placeholders = goalFormPlaceholders;
+
+    const title = ref('');
+    const about = ref('');
+    const completed = ref(false);
+    const country = ref('');
+    const city = ref('');
+
+    // Google maps code
+    const startingPosition = computed(() => ({
       lat: 51.5072,
       lng: 0.1276,
     }));
-    const otherPos = ref(null);
     const loader = new Loader({
       apiKey: process.env.VUE_APP_GOOGLE_MAPS_API_KEY,
       libraries: ['places'],
@@ -85,16 +158,16 @@ export default {
     let map = null;
     let clickListener = null;
     let card = null;
-    // let marker = null;
     let input = null;
     let autocomplete = null;
     let biasInputElement = null;
     let strictBoundsInputElement = null;
     let options = null;
+
     onMounted(async () => {
       await loader.load().then(() => {
         map = new google.maps.Map(document.getElementById('map'), {
-          center: currentPosition.value,
+          center: startingPosition.value,
           zoom: 7,
         });
       });
@@ -124,16 +197,34 @@ export default {
 
       infowindow.setContent(infowindowContent);
 
+      state.myLatLng = startingPosition.value;
+
+      // Sets up initial marker
       const marker = new google.maps.Marker({
         map,
+        position: state.myLatLng,
         anchorPoint: new google.maps.Point(0, -29),
+        clickable: true,
+        draggable: true,
+      });
+      marker.setPosition(state.myLatLng);
+      map.addListener('click', (e) => {
+        state.myLatLng = { lat: e.latLng.lat(), lng: e.latLng.lng() };
+        marker.setPosition(state.myLatLng);
+        state.newMapLocationSelected = true;
       });
 
       autocomplete.addListener('place_changed', () => {
         infowindow.close();
         marker.setVisible(false);
 
+        // set stored lat/lng values to that of the place. Can be overwritten by clicking on map
         const place = autocomplete.getPlace();
+        state.myLatLng = {
+          lat: place.geometry.location.lat(),
+          lng: place.geometry.location.lng(),
+        };
+        state.newMapLocationSelected = true;
 
         if (!place.geometry || !place.geometry.location) {
           // User entered the name of a Place that was not suggested and
@@ -152,8 +243,15 @@ export default {
 
         marker.setPosition(place.geometry.location);
         marker.setVisible(true);
+        console.log('marker', marker);
+        console.log('marker.position', marker.position.lat());
+        map.addListener('click', (e) => {
+          state.myLatLng = { lat: e.latLng.lat(), lng: e.latLng.lng() };
+          marker.setPosition(state.myLatLng);
+          state.newMapLocationSelected = true;
+        });
 
-        infowindowContent.children['place-name'].textContent = place.name;
+        // infowindowContent.children['place-name'].textContent = place.name;
         infowindowContent.children['place-address'].textContent =
           place.formatted_address;
         infowindow.open(map, marker);
@@ -210,14 +308,70 @@ export default {
 
         input.value = '';
       });
+    }),
+      onUnmounted(async () => {
+        if (clickListener) clickListener.remove();
+      });
+
+    const {
+      mutate: addTravelBucketListItem,
+      onDone,
+      onError,
+    } = useMutation(
+      gql`
+        mutation addTravelBucketListItem(
+          $travelItemInput: TravelBucketListInput
+        ) {
+          addTravelBucketListItem(travelItemInput: $travelItemInput) {
+            _id
+            userId
+            category
+            title
+            about
+            completed
+            latitude
+            longitude
+            country
+            city
+          }
+        }
+      `,
+      () => ({
+        variables: {
+          travelItemInput: {
+            category: categories.TRAVEL,
+            title: title.value,
+            about: about.value,
+            completed: completed.value,
+            latitude: state.myLatLng.lat,
+            longitude: state.myLatLng.lng,
+            country: country.value,
+            city: city.value,
+          },
+        },
+      }),
+    );
+    onDone((result) => {
+      store.commit('addGoal', {
+        category: storeCategories.TRAVEL,
+        data: result.data.travelBucketListItem,
+      });
+      router.push('/');
     });
-    onUnmounted(async () => {
-      if (clickListener) clickListener.remove();
+    onError((e) => {
+      logErrorMessages(e);
+      // shows the full error from graphql
+      console.log(JSON.stringify(e, null, 2));
+      state.showErrorMessage = true;
     });
+
     return {
-      currentPosition,
-      otherPos,
-      clickListener,
+      placeholders,
+      title,
+      about,
+      completed,
+      country,
+      city,
       card,
       input,
       biasInputElement,
@@ -225,6 +379,8 @@ export default {
       options,
       autocomplete,
       map,
+      state,
+      addTravelBucketListItem,
     };
   },
 };
@@ -317,5 +473,11 @@ body {
   font-size: 25px;
   font-weight: 500;
   padding: 6px 12px;
+}
+
+#map-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>
