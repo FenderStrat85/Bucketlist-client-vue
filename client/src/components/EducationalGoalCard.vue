@@ -243,8 +243,7 @@ export default {
         },
       }),
     );
-    onDoneDelete((result) => {
-      console.log('result!!!!', result);
+    onDoneDelete(() => {
       store.commit('removeGoal', {
         id: props.id,
         category: storeCategories.EDUCATIONAL,

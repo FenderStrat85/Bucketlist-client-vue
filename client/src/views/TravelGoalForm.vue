@@ -354,7 +354,7 @@ export default {
     onDone((result) => {
       store.commit('addGoal', {
         category: storeCategories.TRAVEL,
-        data: result.data.travelBucketListItem,
+        data: result.data.addTravelBucketListItem,
       });
       router.push('/');
     });

@@ -2,7 +2,7 @@
   <div>
     <h1>I am the item list page</h1>
     <h2>Travel Goals</h2>
-    <div v-if="result && !dataIsLoaded">
+    <div v-if="result && !dataIsLoaded && travel.length > 0">
       <div v-for="item in travel" :key="item._id">
         <router-link :to="`goals/travel/${item._id}`">
           <h2>{{ item.title }}</h2>
@@ -18,12 +18,17 @@
         <h3>{{ item.category }}</h3>
       </div>
     </div>
-    <div v-if="allTravelGoals.length === 0 && dataIsLoaded">
+    <div
+      v-if="
+        (allTravelGoals.length === 0 && dataIsLoaded) ||
+        (result && !dataIsLoaded && travel.length === 0)
+      "
+    >
       <h3>You have no travel goals, go and add some</h3>
     </div>
 
     <h2>Educational Goals</h2>
-    <div v-if="result && !dataIsLoaded">
+    <div v-if="result && !dataIsLoaded && education.length > 0">
       <div v-for="item in education" :key="item._id">
         <router-link :to="`goals/education/${item._id}`">
           <h2>{{ item.title }}</h2>
@@ -39,12 +44,17 @@
         <h3>{{ item.category }}</h3>
       </div>
     </div>
-    <div v-if="allEducationalGoals.length === 0 && dataIsLoaded">
+    <div
+      v-if="
+        (allEducationalGoals.length === 0 && dataIsLoaded) ||
+        (result && !dataIsLoaded && education.length === 0)
+      "
+    >
       <h3>You have no educational goals, go and add some</h3>
     </div>
 
     <h2>Personal Goals</h2>
-    <div v-if="result && !dataIsLoaded">
+    <div v-if="result && !dataIsLoaded && personal.length > 0">
       <div v-for="item in personal" :key="item._id">
         <router-link :to="`goals/personal/${item._id}`">
           <h2>{{ item.title }}</h2>
@@ -60,7 +70,12 @@
         <h3>{{ item.category }}</h3>
       </div>
     </div>
-    <div v-if="allPersonalGoals.length === 0 && dataIsLoaded">
+    <div
+      v-if="
+        (allPersonalGoals.length === 0 && dataIsLoaded) ||
+        (result && !dataIsLoaded && personal.length === 0)
+      "
+    >
       <h3>You have no personal goals, go and add some</h3>
     </div>
 
@@ -159,6 +174,8 @@ export default {
     const allTravelGoals = store.getters.getAllTravelGoals;
     const allEducationalGoals = store.getters.getAllEducationalGoals;
     const allPersonalGoals = store.getters.getAllPersonalGoals;
+
+    console.log('allEducationalGoals', allEducationalGoals);
     return {
       result,
       travel,
