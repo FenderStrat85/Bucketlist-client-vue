@@ -117,7 +117,7 @@
 /* eslint-disable no-undef */
 // needs above to allow google maps to load
 import { computed, reactive, ref } from 'vue';
-import { Loader } from '@googlemaps/js-api-loader';
+// import { Loader } from '@googlemaps/js-api-loader';
 import { onMounted, onUnmounted } from '@vue/runtime-core';
 import { goalFormPlaceholders } from '../constants/formPlaceholders';
 import gql from 'graphql-tag';
@@ -126,6 +126,7 @@ import { categories, storeCategories } from '../constants/categories';
 import { logErrorMessages } from '@vue/apollo-util';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import { loader } from '../constants/googleMapsLoader';
 
 export default {
   setup() {
@@ -150,11 +151,6 @@ export default {
       lat: 51.5072,
       lng: 0.1276,
     }));
-    const loader = new Loader({
-      apiKey: process.env.VUE_APP_GOOGLE_MAPS_API_KEY,
-      libraries: ['places'],
-      version: 'weekly',
-    });
     let map = null;
     let clickListener = null;
     let card = null;
@@ -171,11 +167,6 @@ export default {
           zoom: 7,
         });
       });
-      // clickListener = map.value.addListener(
-      //   'click',
-      //   ({ latLng: { lat, lng } }) =>
-      //     (otherPos.value = { lat: lat(), lng: lng() }),
-      // );
       card = document.getElementById('pac-card');
       input = document.getElementById('pac-input');
       biasInputElement = document.getElementById('use-location-bias');
@@ -243,8 +234,6 @@ export default {
 
         marker.setPosition(place.geometry.location);
         marker.setVisible(true);
-        console.log('marker', marker);
-        console.log('marker.position', marker.position.lat());
         map.addListener('click', (e) => {
           state.myLatLng = { lat: e.latLng.lat(), lng: e.latLng.lng() };
           marker.setPosition(state.myLatLng);
