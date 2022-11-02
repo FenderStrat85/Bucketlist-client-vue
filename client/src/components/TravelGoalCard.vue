@@ -368,17 +368,7 @@ export default {
         toast.success('Travel goal updated successfully', toastOptions);
       }
       store.commit('updateGoal', {
-        data: {
-          _id: travelGoal._id,
-          category: categories.TRAVEL,
-          title: title.value,
-          about: about.value,
-          country: country.value,
-          city: city.value,
-          latitude: state.myLatLng.lat,
-          longitude: state.myLatLng.lng,
-          completed: completed.value,
-        },
+        data: result.data.updateTravelBucketListItem,
         category: storeCategories.TRAVEL,
       });
       router.push('/');

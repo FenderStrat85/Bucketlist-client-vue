@@ -120,6 +120,10 @@ import { useRouter } from 'vue-router';
 import { categories, storeCategories } from '../constants/categories';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
+import 'vue-toast-notification/dist/theme-sugar.css';
+import { toastOptions } from '../constants/toastOptions';
+import { useToast } from 'vue-toast-notification';
+
 export default {
   props: {
     id: String,
@@ -135,8 +139,8 @@ export default {
       isInEditMode: false,
     });
     const personalGoal = store.getters.getPersonalById(props.id);
+    const toast = useToast();
 
-    console.log('personalGaol!!!', personalGoal);
     const placeholders = {
       title: personalGoal.title,
       about: personalGoal.about,
@@ -209,6 +213,7 @@ export default {
       }),
     );
     onDoneUpdate((result) => {
+      toast.success('Personal goal updated successfully', toastOptions);
       store.commit('updateGoal', {
         data: result.data.updatePersonalBucketListItem,
         category: storeCategories.PERSONAL,

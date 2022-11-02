@@ -118,6 +118,9 @@ import { useRouter } from 'vue-router';
 import { categories, storeCategories } from '../constants/categories';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
+import 'vue-toast-notification/dist/theme-sugar.css';
+import { toastOptions } from '../constants/toastOptions';
+import { useToast } from 'vue-toast-notification';
 
 export default {
   props: {
@@ -134,6 +137,7 @@ export default {
       isInEditMode: false,
     });
     const educationalGoal = store.getters.getEducationById(props.id);
+    const toast = useToast();
 
     const placeholders = {
       title: educationalGoal.title,
@@ -209,7 +213,7 @@ export default {
       }),
     );
     onDoneUpdate((result) => {
-      console.log(result);
+      toast.success('Educational goal updated successfully', toastOptions);
       store.commit('updateGoal', {
         data: result.data.updateEducationalBucketListItem,
         category: storeCategories.EDUCATIONAL,

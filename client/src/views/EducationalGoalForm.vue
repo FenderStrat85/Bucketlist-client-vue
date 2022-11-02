@@ -101,6 +101,9 @@ import { logErrorMessages } from '@vue/apollo-util';
 import { useStore } from 'vuex';
 import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
+import 'vue-toast-notification/dist/theme-sugar.css';
+import { toastOptions } from '../constants/toastOptions';
+import { useToast } from 'vue-toast-notification';
 
 export default {
   components: {
@@ -113,6 +116,7 @@ export default {
       showErrorMessage: false,
     });
     const placeholders = goalFormPlaceholders;
+    const toast = useToast();
 
     const title = ref('');
     const about = ref('');
@@ -166,6 +170,7 @@ export default {
       }),
     );
     onDone((result) => {
+      toast.success('Educational goal successfully added', toastOptions);
       store.commit('addGoal', {
         category: storeCategories.EDUCATIONAL,
         data: result.data.addEducationalBucketListItem,
