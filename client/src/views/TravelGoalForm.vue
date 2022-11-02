@@ -127,6 +127,9 @@ import { logErrorMessages } from '@vue/apollo-util';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { loader } from '../constants/googleMapsLoader';
+import { useToast } from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
+import { toastOptions } from '../constants/toastOptions';
 
 export default {
   setup() {
@@ -137,7 +140,7 @@ export default {
       showErrorMessage: false,
       newMapLocationSelected: false,
     });
-
+    const toast = useToast();
     const placeholders = goalFormPlaceholders;
 
     const title = ref('');
@@ -341,6 +344,7 @@ export default {
       }),
     );
     onDone((result) => {
+      toast.success('Travel goal added successfully!', toastOptions);
       store.commit('addGoal', {
         category: storeCategories.TRAVEL,
         data: result.data.addTravelBucketListItem,

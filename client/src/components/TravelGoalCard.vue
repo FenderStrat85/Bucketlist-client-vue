@@ -131,6 +131,9 @@ import { useRouter } from 'vue-router';
 // import { Loader } from '@googlemaps/js-api-loader';
 import { onMounted, onUnmounted } from '@vue/runtime-core';
 import { loader } from '../constants/googleMapsLoader';
+import { useToast } from 'vue-toast-notification';
+import 'vue-toast-notification/dist/theme-sugar.css';
+import { toastOptions } from '../constants/toastOptions';
 
 export default {
   props: {
@@ -140,6 +143,7 @@ export default {
     const store = useStore();
     const router = useRouter();
     const travelGoal = store.getters.getTravelById(props.id);
+    const toast = useToast();
 
     const placeholders = {
       title: travelGoal.title,
@@ -360,8 +364,21 @@ export default {
     );
     onDoneUpdate((result) => {
       console.log('result', result);
+      if (result) {
+        toast.success('Travel goal updated successfully', toastOptions);
+      }
       store.commit('updateGoal', {
-        data: result.data.updateTravelBucketListItem,
+        data: {
+          _id: travelGoal._id,
+          category: categories.TRAVEL,
+          title: title.value,
+          about: about.value,
+          country: country.value,
+          city: city.value,
+          latitude: state.myLatLng.lat,
+          longitude: state.myLatLng.lng,
+          completed: completed.value,
+        },
         category: storeCategories.TRAVEL,
       });
       router.push('/');
