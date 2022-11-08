@@ -18,6 +18,7 @@
     "vue": "^3.0.0",
     "vue-router": "^4.0.12",
     "vue-toast-notification": "^3.0.4",
+    "vue3-lottie": "^2.4.0",
     "vuex": "^4.0.2"
   },
   "devDependencies": {

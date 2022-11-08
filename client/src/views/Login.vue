@@ -11,6 +11,9 @@
     <div v-if="state.showErrorMessage">
       <h2>There has been an error logging in</h2>
     </div>
+    <div>
+      <Vue3Lottie :animationData="LoginAnimation" :height="600" :width="600" />
+    </div>
   </div>
 </template>
 
@@ -20,8 +23,14 @@ import { useStore } from 'vuex';
 import { useMutation } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import { useRouter } from 'vue-router';
+import LoginAnimation from '../assets/animations/login.json';
+import { Vue3Lottie } from 'vue3-lottie';
+import 'vue3-lottie/dist/style.css';
 
 export default {
+  components: {
+    Vue3Lottie,
+  },
   setup() {
     const router = useRouter();
     const store = useStore();
@@ -72,6 +81,7 @@ export default {
       password,
       loginUser,
       state,
+      LoginAnimation,
     };
   },
 };
