@@ -60,6 +60,38 @@
           v-model="completed"
         />
         <label for="completed">Not Completed</label>
+        <div id="photoContainer">
+          <div v-if="state.cloudinaryPhotoUrl.length === 0">
+            <div>
+              <label for="image">Add a photo</label>
+              <input
+                type="file"
+                id="image"
+                accept="image/png, image/jpg, image/jpeg"
+                @change="handleFileUpload(false)"
+              />
+            </div>
+            <div id="displayImage"></div>
+          </div>
+          <div v-if="state.cloudinaryPhotoUrl.length > 0">
+            <div>
+              <label for="image">Change your photo</label>
+              <input
+                type="file"
+                id="image"
+                accept="image/png, image/jpg, image/jpeg"
+                @change="handleFileUpload(true)"
+              />
+            </div>
+            <div>
+              <img
+                :src="state.cloudinaryPhotoUrl"
+                alt="travel goal photo"
+                id="displayImage"
+              />
+            </div>
+          </div>
+        </div>
       </form>
     </div>
     <div id="map-display">
@@ -128,7 +160,6 @@ import { useMutation } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import { categories, storeCategories } from '../constants/categories';
 import { useRouter } from 'vue-router';
-// import { Loader } from '@googlemaps/js-api-loader';
 import { onMounted, onUnmounted } from '@vue/runtime-core';
 import { loader } from '../constants/googleMapsLoader';
 import { useToast } from 'vue-toast-notification';
@@ -163,10 +194,50 @@ export default {
       showErrorMessage: false,
       isInEditMode: false,
       myLatLng: { lat: travelGoal.latitude, lng: travelGoal.longitude },
+      imageToUpload: '',
+      cloudinaryPhotoUrl:
+        travelGoal.cloudinaryPhotoUrl.length > 0
+          ? travelGoal.cloudinaryPhotoUrl
+          : '',
     });
-
     const setToEditMode = () => (state.isInEditMode = true);
     const exitEditMode = () => (state.isInEditMode = false);
+
+    const handleFileUpload = (changePhoto) => {
+      const img = document.querySelector('#image');
+      const reader = new FileReader();
+      reader.onload = () => {
+        state.imageToUpload = reader.result;
+        if (changePhoto) {
+          document.getElementById('displayImage').src = state.imageToUpload;
+        } else {
+          document.querySelector(
+            '#displayImage',
+          ).style.backgroundImage = `url(${state.imageToUpload})`;
+        }
+      };
+      reader.readAsDataURL(img.files[0]);
+      const formData = new FormData();
+      formData.append('file', img.files[0]);
+      formData.append(
+        'upload_preset',
+        process.env.VUE_APP_CLOUDINARY_UPLOAD_PRESET,
+      );
+
+      fetch(process.env.VUE_APP_CLOUDINARY_URL, {
+        method: 'POST',
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.secure_url !== '') {
+            console.log(data.secure_url);
+            state.cloudinaryPhotoUrl = data.secure_url;
+            console.log(state.cloudinaryPhotoUrl);
+          }
+        })
+        .catch((err) => console.error(err));
+    };
 
     // Google maps code
     const startingPosition = computed(() => ({
@@ -343,6 +414,7 @@ export default {
             latitude
             longitude
             completed
+            cloudinaryPhotoUrl
           }
         }
       `,
@@ -358,6 +430,7 @@ export default {
             latitude: state.myLatLng.lat,
             longitude: state.myLatLng.lng,
             completed: completed.value,
+            cloudinaryPhotoUrl: state.cloudinaryPhotoUrl,
           },
         },
       }),
@@ -432,12 +505,29 @@ export default {
       completed,
       country,
       city,
+      handleFileUpload,
     };
   },
 };
 </script>
 
 <style>
+#photoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#displayImage {
+  margin-top: 20px;
+  width: 375px;
+  height: 211px;
+  border: 1px solid black;
+  background-position: center;
+  background-size: cover;
+}
+
 /* 
  * Always set the map height explicitly to define the size of the div element
  * that contains the map. 

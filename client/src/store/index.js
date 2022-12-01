@@ -59,14 +59,10 @@ const store = createStore({
       state.dataIsLoaded = payload;
     },
     populateStore(state, payload) {
-      console.log('payload', payload);
       if (payload.data.length > 0) {
         state[payload.category] = payload.data;
       } else {
-        console.log('no data');
         state[payload.category] = [];
-        console.log(state[payload.category].length);
-        console.log('dataLoaded?', state.dataIsLoaded);
       }
     },
     addGoal(state, payload) {
@@ -79,11 +75,12 @@ const store = createStore({
       state[payload.category][index] = payload.data;
     },
     removeGoal(state, payload) {
-      console.log('payload', payload);
-      let index = state[payload.category].findIndex(
-        (item) => item.id === payload.id,
-        state[payload.category].splice(index, 1),
-      );
+      let index = state[payload.category].findIndex((item) => {
+        if (item._id === payload.id) {
+          return true;
+        }
+      });
+      state[payload.category].splice(index, 1);
     },
   },
 });

@@ -186,7 +186,9 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           if (data.secure_url !== '') {
+            console.log(data.secure_url);
             state.cloudinaryPhotoUrl = data.secure_url;
+            console.log(state.cloudinaryPhotoUrl);
           }
         })
         .catch((err) => console.error(err));
@@ -383,7 +385,7 @@ export default {
             longitude: state.myLatLng.lng,
             country: country.value,
             city: city.value,
-            cloudinaryUrl: state.cloudinaryUrl,
+            cloudinaryPhotoUrl: state.cloudinaryPhotoUrl,
           },
         },
       }),
