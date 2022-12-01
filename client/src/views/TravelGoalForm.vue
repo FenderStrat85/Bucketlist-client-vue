@@ -50,6 +50,18 @@
         v-model="completed"
       />
       <label for="completed">Not Completed</label>
+      <div id="photoContainer">
+        <div>
+          <label for="image">Add a photo</label>
+          <input
+            type="file"
+            id="image"
+            accept="image/png, image/jpg, image/jpeg"
+            @change="handleFileUpload()"
+          />
+        </div>
+        <div id="displayImage"></div>
+      </div>
 
       <div id="map-display">
         <div class="pac-card" style="width: 70%" id="pac-card">
@@ -117,7 +129,6 @@
 /* eslint-disable no-undef */
 // needs above to allow google maps to load
 import { computed, reactive, ref } from 'vue';
-// import { Loader } from '@googlemaps/js-api-loader';
 import { onMounted, onUnmounted } from '@vue/runtime-core';
 import { goalFormPlaceholders } from '../constants/formPlaceholders';
 import gql from 'graphql-tag';
@@ -139,6 +150,7 @@ export default {
       myLatLng: { lat: 0, lng: 0 },
       showErrorMessage: false,
       newMapLocationSelected: false,
+      imageToUpload: '',
     });
     const toast = useToast();
     const placeholders = goalFormPlaceholders;
@@ -148,6 +160,18 @@ export default {
     const completed = ref(false);
     const country = ref('');
     const city = ref('');
+
+    const handleFileUpload = () => {
+      const img = document.querySelector('#image');
+      const reader = new FileReader();
+      reader.onload = () => {
+        state.imageToUpload = reader.result;
+        document.querySelector(
+          '#displayImage',
+        ).style.backgroundImage = `url(${state.imageToUpload})`;
+      };
+      reader.readAsDataURL(img.files[0]);
+    };
 
     // Google maps code
     const startingPosition = computed(() => ({
@@ -373,6 +397,7 @@ export default {
       autocomplete,
       map,
       state,
+      handleFileUpload,
       addTravelBucketListItem,
     };
   },
@@ -380,6 +405,22 @@ export default {
 </script>
 
 <style>
+#photoContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+#displayImage {
+  margin-top: 20px;
+  width: 375px;
+  height: 211px;
+  border: 1px solid black;
+  background-position: center;
+  background-size: cover;
+}
+
 /* 
  * Always set the map height explicitly to define the size of the div element
  * that contains the map. 
