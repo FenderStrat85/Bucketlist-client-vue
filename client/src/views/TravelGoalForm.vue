@@ -151,6 +151,7 @@ export default {
       showErrorMessage: false,
       newMapLocationSelected: false,
       imageToUpload: '',
+      cloudinaryPhotoUrl: '',
     });
     const toast = useToast();
     const placeholders = goalFormPlaceholders;
@@ -171,6 +172,24 @@ export default {
         ).style.backgroundImage = `url(${state.imageToUpload})`;
       };
       reader.readAsDataURL(img.files[0]);
+      const formData = new FormData();
+      formData.append('file', img.files[0]);
+      formData.append(
+        'upload_preset',
+        process.env.VUE_APP_CLOUDINARY_UPLOAD_PRESET,
+      );
+
+      fetch(process.env.VUE_APP_CLOUDINARY_URL, {
+        method: 'POST',
+        body: formData,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.secure_url !== '') {
+            state.cloudinaryPhotoUrl = data.secure_url;
+          }
+        })
+        .catch((err) => console.error(err));
     };
 
     // Google maps code
@@ -349,6 +368,7 @@ export default {
             longitude
             country
             city
+            cloudinaryPhotoUrl
           }
         }
       `,
@@ -363,6 +383,7 @@ export default {
             longitude: state.myLatLng.lng,
             country: country.value,
             city: city.value,
+            cloudinaryUrl: state.cloudinaryUrl,
           },
         },
       }),
