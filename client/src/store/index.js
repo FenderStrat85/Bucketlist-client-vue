@@ -9,7 +9,7 @@ const store = createStore({
     dataIsLoaded: false,
     travelGoals: [],
     educationGoals: [],
-    personalGoals: [],
+    personalGoals: []
   },
   getters: {
     getUserId: (state) => {
@@ -25,8 +25,6 @@ const store = createStore({
       return state.educationGoals.find((item) => item._id === id);
     },
     getPersonalById: (state) => (id) => {
-      console.log(id);
-      console.log(state.personalGoals);
       return state.personalGoals.find((item) => item._id === id);
     },
     getAllTravelGoals: (state) => {
@@ -37,7 +35,7 @@ const store = createStore({
     },
     getAllPersonalGoals: (state) => {
       return state.personalGoals;
-    },
+    }
   },
   mutations: {
     loginUser(state, payload) {
@@ -70,7 +68,7 @@ const store = createStore({
     },
     updateGoal(state, payload) {
       let index = state[payload.category].findIndex(
-        (item) => item._id === payload.data._id,
+        (item) => item._id === payload.data._id
       );
       state[payload.category][index] = payload.data;
     },
@@ -81,8 +79,8 @@ const store = createStore({
         }
       });
       state[payload.category].splice(index, 1);
-    },
-  },
+    }
+  }
 });
 
 export default store;

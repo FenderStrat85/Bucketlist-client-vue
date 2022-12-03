@@ -1,17 +1,15 @@
 <template>
   <div>
     <h1>I am the item list page</h1>
+    <button @click="showAll">Show All</button>
+    <button @click="filterCompleted">Show completed</button>
+    <button @click="filterActive">Show Active</button>
+    <h2>{{ state.filterMessage }}</h2>
     <h2>Travel Goals</h2>
-    <div v-if="result && !dataIsLoaded && travel.length > 0">
-      <div v-for="item in travel" :key="item._id">
-        <router-link :to="`goals/travel/${item._id}`">
-          <h2>{{ item.title }}</h2>
-        </router-link>
-        <h3>{{ item.category }}</h3>
-      </div>
-    </div>
-    <div v-if="allTravelGoals.length > 0 && dataIsLoaded">
-      <div v-for="item in allTravelGoals" :key="item._id">
+    <div
+      v-if="result || (state.allTravelGoals.length > 0 && state.dataIsLoaded)"
+    >
+      <div v-for="item in state.allTravelGoals" :key="item._id">
         <router-link :to="`goals/travel/${item._id}`">
           <h2>{{ item.title }}</h2>
         </router-link>
@@ -20,24 +18,20 @@
     </div>
     <div
       v-if="
-        (allTravelGoals.length === 0 && dataIsLoaded) ||
-        (result && !dataIsLoaded && travel.length === 0)
+        (state.allTravelGoals.length === 0 && state.dataIsLoaded) ||
+        (result && !state.dataIsLoaded && travel.length === 0)
       "
     >
       <h3>You have no travel goals, go and add some</h3>
     </div>
 
     <h2>Educational Goals</h2>
-    <div v-if="result && !dataIsLoaded && education.length > 0">
-      <div v-for="item in education" :key="item._id">
-        <router-link :to="`goals/education/${item._id}`">
-          <h2>{{ item.title }}</h2>
-        </router-link>
-        <h3>{{ item.category }}</h3>
-      </div>
-    </div>
-    <div v-if="allEducationalGoals.length > 0 && dataIsLoaded">
-      <div v-for="item in allEducationalGoals" :key="item._id">
+    <div
+      v-if="
+        result || (state.allEducationalGoals.length > 0 && state.dataIsLoaded)
+      "
+    >
+      <div v-for="item in state.allEducationalGoals" :key="item._id">
         <router-link :to="`goals/education/${item._id}`">
           <h2>{{ item.title }}</h2>
         </router-link>
@@ -46,24 +40,18 @@
     </div>
     <div
       v-if="
-        (allEducationalGoals.length === 0 && dataIsLoaded) ||
-        (result && !dataIsLoaded && education.length === 0)
+        (state.allEducationalGoals.length === 0 && state.dataIsLoaded) ||
+        (result && !state.dataIsLoaded && education.length === 0)
       "
     >
       <h3>You have no educational goals, go and add some</h3>
     </div>
 
     <h2>Personal Goals</h2>
-    <div v-if="result && !dataIsLoaded && personal.length > 0">
-      <div v-for="item in personal" :key="item._id">
-        <router-link :to="`goals/personal/${item._id}`">
-          <h2>{{ item.title }}</h2>
-        </router-link>
-        <h3>{{ item.category }}</h3>
-      </div>
-    </div>
-    <div v-if="allPersonalGoals.length > 0 && dataIsLoaded">
-      <div v-for="item in allPersonalGoals" :key="item._id">
+    <div
+      v-if="result || (state.allPersonalGoals.length > 0 && state.dataIsLoaded)"
+    >
+      <div v-for="item in state.allPersonalGoals" :key="item._id">
         <router-link :to="`goals/personal/${item._id}`">
           <h2>{{ item.title }}</h2>
         </router-link>
@@ -72,8 +60,8 @@
     </div>
     <div
       v-if="
-        (allPersonalGoals.length === 0 && dataIsLoaded) ||
-        (result && !dataIsLoaded && personal.length === 0)
+        (state.allPersonalGoals.length === 0 && state.dataIsLoaded) ||
+        (result && !state.dataIsLoaded && personal.length === 0)
       "
     >
       <h3>You have no personal goals, go and add some</h3>
@@ -90,11 +78,56 @@ import { useStore } from 'vuex';
 import { useQuery } from '@vue/apollo-composable';
 import gql from 'graphql-tag';
 import { storeCategories } from '../../constants/categories';
+import { reactive } from 'vue';
 
 export default {
   setup() {
     const store = useStore();
-    const dataIsLoaded = store.getters.getDataLoadedStatus;
+    const state = reactive({
+      dataIsLoaded: store.getters.getDataLoadedStatus,
+      allTravelGoals: [],
+      allEducationalGoals: [],
+      allPersonalGoals: [],
+      filterMessage: 'Currently getting your goals'
+    });
+
+    const showAll = () => {
+      state.allTravelGoals = store.getters.getAllTravelGoals;
+      state.allEducationalGoals = store.getters.getAllEducationalGoals;
+      state.allPersonalGoals = store.getters.getAllPersonalGoals;
+      state.filterMessage = 'Currently showing all of your goals';
+    };
+
+    const filterCompleted = () => {
+      state.allPersonalGoals = store.getters.getAllPersonalGoals.filter(
+        (item) => item.completed === true
+      );
+      state.allEducationalGoals = store.getters.getAllEducationalGoals.filter(
+        (item) => item.completed === true
+      );
+      state.allTravelGoals = store.getters.getAllTravelGoals.filter(
+        (item) => item.completed === true
+      );
+      state.filterMessage = 'Currently showing your completed goals';
+    };
+
+    const filterActive = () => {
+      state.allPersonalGoals = store.getters.getAllPersonalGoals.filter(
+        (item) => item.completed === false
+      );
+      state.allEducationalGoals = store.getters.getAllEducationalGoals.filter(
+        (item) => item.completed === false
+      );
+      state.allTravelGoals = store.getters.getAllTravelGoals.filter(
+        (item) => item.completed === false
+      );
+      state.filterMessage = 'Currently showing your active goals';
+    };
+
+    if (state.dataIsLoaded) {
+      showAll();
+    }
+
     let travel = [];
     let education = [];
     let personal = [];
@@ -146,49 +179,52 @@ export default {
       const bucketListItems = queryResult.data.getBucketListItems;
       console.log(bucketListItems);
       bucketListItems.forEach((item) => {
+        store.commit('setDataLoadedToTrue', true);
         if (item && item.category && item.category === 'Travel') {
           travel.push(item);
+          state.allTravelGoals.push(item);
         }
         if (item && item.category && item.category === 'Education') {
           education.push(item);
+          state.allEducationalGoals.push(item);
         }
         if (item && item.category && item.category === 'Personal') {
           personal.push(item);
+          state.allPersonalGoals.push(item);
         }
       });
       store.commit('populateStore', {
         category: storeCategories.TRAVEL,
-        data: travel,
+        data: travel
       });
       store.commit('populateStore', {
         category: storeCategories.EDUCATIONAL,
-        data: education,
+        data: education
       });
       store.commit('populateStore', {
         category: storeCategories.PERSONAL,
-        data: personal,
+        data: personal
       });
-      store.commit('setDataLoadedToTrue', true);
+
+      state.allTravelGoals = store.getters.getAllTravelGoals;
+      state.allEducationalGoals = store.getters.getAllEducationalGoals;
+      state.allPersonalGoals = store.getters.getAllPersonalGoals;
+      state.filterMessage = 'Currently showing all of your goals';
     });
 
-    const allTravelGoals = store.getters.getAllTravelGoals;
-    const allEducationalGoals = store.getters.getAllEducationalGoals;
-    const allPersonalGoals = store.getters.getAllPersonalGoals;
-
-    console.log('allEducationalGoals', allEducationalGoals);
     return {
       result,
       travel,
       education,
       personal,
-      dataIsLoaded,
       loading,
       error,
-      allTravelGoals,
-      allEducationalGoals,
-      allPersonalGoals,
+      state,
+      filterCompleted,
+      showAll,
+      filterActive
     };
-  },
+  }
 };
 </script>
 
