@@ -2,13 +2,14 @@ import { createApp, provide, h } from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store/index';
+import './styles/app.css';
 
 import {
   ApolloClient,
   createHttpLink,
   InMemoryCache,
   ApolloLink,
-  from,
+  from
 } from '@apollo/client/core';
 
 import { DefaultApolloClient } from '@vue/apollo-composable';
@@ -16,7 +17,7 @@ import { DefaultApolloClient } from '@vue/apollo-composable';
 // HTTP connection to the API
 const httpLink = createHttpLink({
   // You should use an absolute URL here
-  uri: 'http://localhost:4000',
+  uri: 'http://localhost:4000'
 });
 
 //middleware created to add headers.
@@ -27,8 +28,8 @@ const authMiddleware = new ApolloLink((operation, forward) => {
   operation.setContext(({ headers = {} }) => ({
     headers: {
       ...headers,
-      authorization: store.state.accessToken || '',
-    },
+      authorization: store.state.accessToken || ''
+    }
   }));
 
   return forward(operation);
@@ -40,7 +41,7 @@ const cache = new InMemoryCache();
 // Create the apollo client
 const apolloClient = new ApolloClient({
   link: from([authMiddleware, httpLink]),
-  cache,
+  cache
 });
 
 //default main.js setup when not using graphql
@@ -52,7 +53,7 @@ const app = createApp({
   setup() {
     provide(DefaultApolloClient, apolloClient);
   },
-  render: () => h(App),
+  render: () => h(App)
 });
 
 app.use(router).use(store).mount('#app');

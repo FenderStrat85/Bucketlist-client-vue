@@ -1,16 +1,44 @@
 <template>
   <div>
-    <h1>I am the sign up page</h1>
+    <h2>Sign up to create an account!</h2>
     <form @submit.prevent="createUser()">
-      <label for="firstName">First Name:</label>
-      <input type="text" name="firstName" v-model="firstName" required />
-      <label for="lastName">Last Name:</label>
-      <input type="text" name="lastName" v-model="lastName" required />
-      <label for="email">Email:</label>
-      <input type="email" name="email" v-model="email" required />
-      <label for="password">Password:</label>
-      <input type="password" name="password" v-model="password" required />
-      <button>Sign Up</button>
+      <div>
+        <label for="firstName">First Name:</label>
+        <input
+          className="small-input"
+          type="text"
+          name="firstName"
+          v-model="firstName"
+          required
+        />
+        <label for="lastName">Last Name:</label>
+        <input
+          className="small-input"
+          type="text"
+          name="lastName"
+          v-model="lastName"
+          required
+        />
+        <label for="email">Email:</label>
+        <input
+          className="small-input"
+          type="email"
+          name="email"
+          v-model="email"
+          required
+        />
+        <label for="password">Password:</label>
+        <input
+          className="small-input"
+          type="password"
+          name="password"
+          v-model="password"
+          required
+        />
+        <div>
+          <button class="button-login">Sign Up</button>
+        </div>
+      </div>
       <div v-if="state.showErrorMessage">
         <h2>There has been an error creating an account</h2>
       </div>
@@ -37,13 +65,13 @@ import 'vue3-lottie/dist/style.css';
 
 export default {
   components: {
-    Vue3Lottie,
+    Vue3Lottie
   },
   setup() {
     const router = useRouter();
     const store = useStore();
     const state = reactive({
-      showErrorMessage: false,
+      showErrorMessage: false
     });
 
     const firstName = ref('');
@@ -54,7 +82,7 @@ export default {
     const {
       mutate: createUser,
       onDone,
-      onError,
+      onError
     } = useMutation(
       gql`
         mutation createUser($registrationInput: RegistrationUserInput) {
@@ -71,10 +99,10 @@ export default {
             firstName: firstName.value,
             lastName: lastName.value,
             email: email.value,
-            password: password.value,
-          },
-        },
-      }),
+            password: password.value
+          }
+        }
+      })
     );
     onDone((result) => {
       store.commit('createUser', result.data);
@@ -91,9 +119,9 @@ export default {
       email,
       password,
       state,
-      LoginAnimation,
+      LoginAnimation
     };
-  },
+  }
 };
 </script>
 

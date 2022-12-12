@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body,
+html {
+  padding: 0;
+  margin: 0;
+  min-height: 100vh;
+}
+body,
+html {
+  @apply bg-grey;
+}
+
+h1 {
+  @apply text-5xl text-center text-purple;
+}
+
+h2 {
+  @apply text-xl text-center text-purple;
+}
+
+.small-input {
+  @apply border-solid border-2 rounded-full border-purple p-1 m-3 text-center;
+}
+
+.background-grey {
+  @apply bg-grey;
+}
+
+.nav-container {
+  @apply flex flex-row justify-center justify-items-center;
+}
+
+.button-login-nav {
+  @apply border-solid border-2 rounded-full border-purple p-2 m-3 uppercase text-xl cursor-pointer;
+}
+
+.button-login-nav:hover {
+  @apply bg-forrestGreen;
+}
+
+.button-login {
+  @apply border-solid border-2 rounded-full border-purple py-2 px-6 m-3 uppercase text-xl cursor-pointer;
+}
+
+.button-login:hover {
+  @apply bg-forrestGreen;
+}

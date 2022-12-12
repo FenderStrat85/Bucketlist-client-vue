@@ -15,9 +15,13 @@
         >Add Travel Goal</router-link
       >
     </div>
-    <div v-if="!this.$store.state.isAuthenticated">
-      <router-link :to="{ name: 'Signup' }">Sign Up</router-link>
-      <router-link :to="{ name: 'Login' }">Login</router-link>
+    <div class="nav-container" v-if="!this.$store.state.isAuthenticated">
+      <router-link class="button-login-nav" :to="{ name: 'Signup' }"
+        >Sign Up</router-link
+      >
+      <router-link class="button-login-nav" :to="{ name: 'Login' }"
+        >Login</router-link
+      >
     </div>
   </nav>
 </template>
@@ -35,9 +39,9 @@ export default {
       router.push('/login');
     };
     return {
-      logout,
+      logout
     };
-  },
+  }
 };
 </script>
 

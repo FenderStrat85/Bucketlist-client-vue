@@ -1,12 +1,30 @@
 <template>
-  <div>
-    <h1>I am the login page</h1>
+  <div class="background-grey">
+    <h1>Welcome to Bucketlist!</h1>
+    <h2>Got an account? Let's get you logged in!</h2>
+    <h2>New here? Click the button at the top to sign up!</h2>
     <form @submit.prevent="loginUser()">
-      <label for="email">Email:</label>
-      <input type="email" name="email" v-model="email" required />
-      <label for="password">Password:</label>
-      <input type="password" name="password" v-model="password" required />
-      <button>Login</button>
+      <div>
+        <label for="email">Email:</label>
+        <input
+          class="small-input"
+          type="email"
+          name="email"
+          v-model="email"
+          required
+        />
+        <label for="password">Password:</label>
+        <input
+          class="small-input"
+          type="password"
+          name="password"
+          v-model="password"
+          required
+        />
+        <div>
+          <button class="button-login">Login</button>
+        </div>
+      </div>
     </form>
     <div v-if="state.showErrorMessage">
       <h2>There has been an error logging in</h2>
@@ -29,13 +47,13 @@ import 'vue3-lottie/dist/style.css';
 
 export default {
   components: {
-    Vue3Lottie,
+    Vue3Lottie
   },
   setup() {
     const router = useRouter();
     const store = useStore();
     const state = reactive({
-      showErrorMessage: false,
+      showErrorMessage: false
     });
     const email = ref('');
     const password = ref('');
@@ -47,7 +65,7 @@ export default {
     const {
       mutate: loginUser,
       onDone,
-      onError,
+      onError
     } = useMutation(
       gql`
         mutation loginUser($loginInput: LoginUserInput) {
@@ -62,10 +80,10 @@ export default {
         variables: {
           loginInput: {
             email: email.value,
-            password: password.value,
-          },
-        },
-      }),
+            password: password.value
+          }
+        }
+      })
     );
     onDone((result) => {
       store.commit('loginUser', result.data);
@@ -81,9 +99,9 @@ export default {
       password,
       loginUser,
       state,
-      LoginAnimation,
+      LoginAnimation
     };
-  },
+  }
 };
 </script>
 
