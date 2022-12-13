@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>Welcome to Bucketlist!</h1>
     <h2>Sign up to create an account!</h2>
     <form @submit.prevent="createUser()">
       <div>

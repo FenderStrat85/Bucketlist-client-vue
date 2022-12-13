@@ -1,19 +1,28 @@
 <template>
   <div>
-    <h1>I am the item list page</h1>
-    <button @click="showAll">Show All</button>
-    <button @click="filterCompleted">Show completed</button>
-    <button @click="filterActive">Show Active</button>
+    <h1>Your goals!</h1>
+    <button class="button-goal-page" @click="showAll">Show All</button>
+    <button class="button-goal-page" @click="filterCompleted">
+      Show completed
+    </button>
+    <button class="button-goal-page" @click="filterActive">Show Active</button>
     <h2>{{ state.filterMessage }}</h2>
-    <h2>Travel Goals</h2>
+    <h2 class="goal-list-category">Travel Goals</h2>
     <div
       v-if="result || (state.allTravelGoals.length > 0 && state.dataIsLoaded)"
     >
-      <div v-for="item in state.allTravelGoals" :key="item._id">
-        <router-link :to="`goals/travel/${item._id}`">
-          <h2>{{ item.title }}</h2>
-        </router-link>
-        <h3>{{ item.category }}</h3>
+      <div class="goal-list-parent-container">
+        <div
+          class="goal-list-container goal-list-container-travel"
+          v-for="item in state.allTravelGoals"
+          :key="item._id"
+        >
+          <router-link :to="`goals/travel/${item._id}`">
+            <h2 class="goal-list-title">{{ item.title }}</h2>
+          </router-link>
+          <h3>Country: {{ item.country }}</h3>
+          <h3>City: {{ item.city }}</h3>
+        </div>
       </div>
     </div>
     <div
@@ -25,17 +34,24 @@
       <h3>You have no travel goals, go and add some</h3>
     </div>
 
-    <h2>Educational Goals</h2>
+    <h2 class="goal-list-category">Educational Goals</h2>
     <div
       v-if="
         result || (state.allEducationalGoals.length > 0 && state.dataIsLoaded)
       "
     >
-      <div v-for="item in state.allEducationalGoals" :key="item._id">
-        <router-link :to="`goals/education/${item._id}`">
-          <h2>{{ item.title }}</h2>
-        </router-link>
-        <h3>{{ item.category }}</h3>
+      <div class="goal-list-parent-container">
+        <div
+          class="goal-list-container goal-list-container-educational"
+          v-for="item in state.allEducationalGoals"
+          :key="item._id"
+        >
+          <router-link :to="`goals/education/${item._id}`">
+            <h2 class="goal-list-title">{{ item.title }}</h2>
+          </router-link>
+          <h3>Subject: {{ item.subject }}</h3>
+          <h3>Desired Goal: {{ item.desiredGoal }}</h3>
+        </div>
       </div>
     </div>
     <div
@@ -47,15 +63,22 @@
       <h3>You have no educational goals, go and add some</h3>
     </div>
 
-    <h2>Personal Goals</h2>
+    <h2 class="goal-list-category">Personal Goals</h2>
     <div
       v-if="result || (state.allPersonalGoals.length > 0 && state.dataIsLoaded)"
     >
-      <div v-for="item in state.allPersonalGoals" :key="item._id">
-        <router-link :to="`goals/personal/${item._id}`">
-          <h2>{{ item.title }}</h2>
-        </router-link>
-        <h3>{{ item.category }}</h3>
+      <div class="goal-list-parent-container">
+        <div
+          class="goal-list-container goal-list-container-personal"
+          v-for="item in state.allPersonalGoals"
+          :key="item._id"
+        >
+          <router-link :to="`goals/personal/${item._id}`">
+            <h2 class="goal-list-title">{{ item.title }}</h2>
+          </router-link>
+          <h3>Area of Life: {{ item.areaOfLife }}</h3>
+          <h3>Desired Goal: {{ item.desiredGoal }}</h3>
+        </div>
       </div>
     </div>
     <div

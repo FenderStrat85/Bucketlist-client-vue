@@ -1,21 +1,24 @@
 <template>
   <nav>
-    <div v-if="this.$store.state.isAuthenticated">
-      <span>Logged In as....</span>
-      <button @click="logout">Logout</button>
-      <router-link :to="{ name: 'Home' }">Home</router-link>
-      <router-link :to="{ name: 'Goals' }">Items</router-link>
-      <router-link :to="{ name: 'PersonalGoalForm' }"
-        >Add Personal Goal</router-link
+    <div class="main-nav-container" v-if="this.$store.state.isAuthenticated">
+      <router-link class="button-main-nav" :to="{ name: 'Home' }"
+        >Home</router-link
       >
-      <router-link :to="{ name: 'EducationalGoalForm' }"
-        >Add Education Goal</router-link
+      <router-link class="button-main-nav" :to="{ name: 'Goals' }"
+        >Goals</router-link
       >
-      <router-link :to="{ name: 'TravelGoalForm' }"
+      <router-link class="button-main-nav" :to="{ name: 'TravelGoalForm' }"
         >Add Travel Goal</router-link
       >
+      <router-link class="button-main-nav" :to="{ name: 'EducationalGoalForm' }"
+        >Add Education Goal</router-link
+      >
+      <router-link class="button-main-nav" :to="{ name: 'PersonalGoalForm' }"
+        >Add Personal Goal</router-link
+      >
+      <button class="button-main-nav" @click="logout">Logout</button>
     </div>
-    <div class="nav-container" v-if="!this.$store.state.isAuthenticated">
+    <div class="login-nav-container" v-if="!this.$store.state.isAuthenticated">
       <router-link class="button-login-nav" :to="{ name: 'Signup' }"
         >Sign Up</router-link
       >

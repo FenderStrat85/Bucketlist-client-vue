@@ -1,8 +1,7 @@
 <template>
   <div>
-    <h1>I am the home page</h1>
-    <p>Is authenticated? {{ authenticationStatus }}</p>
-    <p>User is logged in using {{ firstName }}</p>
+    <h1>Home Page</h1>
+    <h2>You are logged in as {{ firstName }}</h2>
     <div>
       <Vue3Lottie
         :animationData="HomepageAnimation"
@@ -22,7 +21,7 @@ import 'vue3-lottie/dist/style.css';
 
 export default {
   components: {
-    Vue3Lottie,
+    Vue3Lottie
   },
   setup() {
     const store = useStore();
@@ -31,9 +30,9 @@ export default {
     return {
       authenticationStatus,
       firstName,
-      HomepageAnimation,
+      HomepageAnimation
     };
-  },
+  }
 };
 </script>
 

@@ -13,25 +13,73 @@ html {
   @apply bg-grey;
 }
 
+.background-grey {
+  @apply bg-grey;
+}
+
+/* Text and title styles  */
+
 h1 {
-  @apply text-5xl text-center text-purple;
+  @apply text-5xl text-center text-purple mb-2;
 }
 
 h2 {
-  @apply text-xl text-center text-purple;
+  @apply text-xl text-center text-purple mb-2 mt-2;
+}
+
+.goal-list-category {
+  @apply text-2xl font-bold;
+}
+
+.goal-list-title:hover {
+  @apply underline;
+}
+
+/* form styles */
+
+.form-container {
+  @apply flex flex-col justify-center justify-items-center items-center w-full;
+}
+
+.form-input {
+  @apply border-solid border-2 rounded-full border-purple p-2 m-3 w-3/4 text-center;
+}
+
+.form-textarea {
+  @apply border-solid border-2 border-purple p-2 m-3 w-3/4 rounded-lg;
+}
+
+.form-radio-container {
+  @apply flex flex-row justify-evenly w-1/2 p-2 m-3;
 }
 
 .small-input {
   @apply border-solid border-2 rounded-full border-purple p-1 m-3 text-center;
 }
 
-.background-grey {
-  @apply bg-grey;
+.photo-container {
+  @apply flex flex-col justify-center justify-items-center items-center w-full h-1/2;
 }
 
-.nav-container {
+.photo-input {
+  @apply flex flex-row justify-center justify-items-center items-center  w-1/2 p-2 m-3;
+}
+
+.photo-label {
+  @apply pr-3;
+}
+
+/* nav styles */
+
+.login-nav-container {
   @apply flex flex-row justify-center justify-items-center;
 }
+
+.main-nav-container {
+  @apply flex flex-row justify-center justify-items-center mb-1.5;
+}
+
+/* button styles */
 
 .button-login-nav {
   @apply border-solid border-2 rounded-full border-purple p-2 m-3 uppercase text-xl cursor-pointer;
@@ -47,4 +95,46 @@ h2 {
 
 .button-login:hover {
   @apply bg-forrestGreen;
+}
+
+.button-main-nav {
+  @apply p-2 m-3 text-xl cursor-pointer flex justify-center justify-items-center;
+}
+
+.button-main-nav:hover {
+  @apply text-purple underline;
+}
+
+.button-goal-page {
+  @apply p-2 m-3 cursor-pointer border-purple border-solid border-2 rounded-full;
+}
+
+.button-goal-page:hover {
+  @apply bg-lightBlue;
+}
+
+/* Goal list and goal card styles */
+
+.goal-list-parent-container {
+  @apply flex flex-col justify-center justify-items-center items-center;
+}
+
+.goal-list-container {
+  @apply flex flex-col justify-center justify-items-center border-2 border-solid border-purple rounded-lg p-2 m-2 w-1/2 shadow-lg;
+}
+
+.goal-list-container-travel {
+  @apply bg-teal;
+}
+
+.goal-list-container-educational {
+  @apply bg-turquoise;
+}
+
+.goal-list-container-personal {
+  @apply bg-lightGreen;
+}
+
+.goal-list-container:hover {
+  @apply shadow-2xl;
 }

@@ -1,58 +1,64 @@
 <template>
   <div>
-    <h1>I am the Travel Goal Form</h1>
-    <div>
-      <span>Click the map to select a position => {{ state.myLatLng }}</span>
-    </div>
+    <h1>Add a travel goal!</h1>
     <form @submit.prevent="addTravelBucketListItem()">
-      <label for="title">Title: </label>
-      <textarea
-        type="text"
-        name="title"
-        v-model="title"
-        :placeholder="placeholders.title"
-        required
-      />
-      <label for="about">About: </label>
-      <textarea
-        type="text"
-        name="about"
-        v-model="about"
-        :placeholder="placeholders.about"
-        required
-      />
-      <span>What country?</span>
-      <input
-        type="text"
-        name="country"
-        v-model="country"
-        :placeholder="placeholders.country"
-      />
-      <span>What city?</span>
-      <input
-        type="text"
-        name="city"
-        v-model="city"
-        :placeholder="placeholders.city"
-      />
-      <span>Have you completed this goal?</span>
-      <input
-        type="radio"
-        id="completed"
-        v-bind:value="true"
-        v-model="completed"
-      />
-      <label for="completed">Completed</label>
-      <input
-        type="radio"
-        id="notCompleted"
-        v-bind:value="false"
-        v-model="completed"
-      />
-      <label for="completed">Not Completed</label>
-      <div id="photoContainer">
-        <div>
-          <label for="image">Add a photo</label>
+      <div class="form-container">
+        <label for="title">Title: </label>
+        <input
+          class="form-input"
+          type="text"
+          name="title"
+          v-model="title"
+          :placeholder="placeholders.title"
+          required
+        />
+        <label for="about">About: </label>
+        <textarea
+          class="form-textarea"
+          rows="5"
+          type="text"
+          name="about"
+          v-model="about"
+          :placeholder="placeholders.about"
+          required
+        />
+        <span>What country?</span>
+        <input
+          class="form-input"
+          type="text"
+          name="country"
+          v-model="country"
+          :placeholder="placeholders.country"
+        />
+        <span>What city?</span>
+        <input
+          class="form-input"
+          type="text"
+          name="city"
+          v-model="city"
+          :placeholder="placeholders.city"
+        />
+        <div class="form-radio-container">
+          <span>Have you completed this goal?</span>
+          <input
+            type="radio"
+            id="completed"
+            v-bind:value="true"
+            v-model="completed"
+          />
+          <label for="completed">Completed</label>
+          <input
+            type="radio"
+            id="notCompleted"
+            v-bind:value="false"
+            v-model="completed"
+          />
+          <label for="completed">Not Completed</label>
+        </div>
+      </div>
+      <div class="photo-container">
+        <div class="photo-input">
+          <label class="photo-label" for="image">Add a photo</label>
           <input
             type="file"
             id="image"
@@ -60,7 +66,8 @@
             @change="handleFileUpload()"
           />
         </div>
-        <div id="displayImage"></div>
+
+        <div v-if="state.fileUploaded" id="image-display"></div>
       </div>
 
       <div id="map-display">
@@ -148,10 +155,11 @@ export default {
     const store = useStore();
     const state = reactive({
       myLatLng: { lat: 0, lng: 0 },
+      fileUploaded: false,
       showErrorMessage: false,
       newMapLocationSelected: false,
       imageToUpload: '',
-      cloudinaryPhotoUrl: '',
+      cloudinaryPhotoUrl: ''
     });
     const toast = useToast();
     const placeholders = goalFormPlaceholders;
@@ -165,10 +173,11 @@ export default {
     const handleFileUpload = () => {
       const img = document.querySelector('#image');
       const reader = new FileReader();
+      state.fileUploaded = true;
       reader.onload = () => {
         state.imageToUpload = reader.result;
         document.querySelector(
-          '#displayImage',
+          '#image-display'
         ).style.backgroundImage = `url(${state.imageToUpload})`;
       };
       reader.readAsDataURL(img.files[0]);
@@ -176,19 +185,19 @@ export default {
       formData.append('file', img.files[0]);
       formData.append(
         'upload_preset',
-        process.env.VUE_APP_CLOUDINARY_UPLOAD_PRESET,
+        process.env.VUE_APP_CLOUDINARY_UPLOAD_PRESET
       );
 
       fetch(process.env.VUE_APP_CLOUDINARY_URL, {
         method: 'POST',
-        body: formData,
+        body: formData
       })
         .then((response) => response.json())
         .then((data) => {
           if (data.secure_url !== '') {
             console.log(data.secure_url);
             state.cloudinaryPhotoUrl = data.secure_url;
-            console.log(state.cloudinaryPhotoUrl);
+            toast.success('Image uploaded successfully', toastOptions);
           }
         })
         .catch((err) => console.error(err));
@@ -197,7 +206,7 @@ export default {
     // Google maps code
     const startingPosition = computed(() => ({
       lat: 51.5072,
-      lng: 0.1276,
+      lng: 0.1276
     }));
     let map = null;
     let clickListener = null;
@@ -212,7 +221,7 @@ export default {
       await loader.load().then(() => {
         map = new google.maps.Map(document.getElementById('map'), {
           center: startingPosition.value,
-          zoom: 7,
+          zoom: 7
         });
       });
       card = document.getElementById('pac-card');
@@ -222,7 +231,7 @@ export default {
       options = {
         fields: ['formatted_address', 'geometry', 'name'],
         strictBounds: false,
-        types: ['establishment'],
+        types: ['establishment']
       };
       // map.controls[google.maps.ControlPosition.TOP_LEFT].push(card);
       autocomplete = new google.maps.places.Autocomplete(input, options);
@@ -244,7 +253,7 @@ export default {
         position: state.myLatLng,
         anchorPoint: new google.maps.Point(0, -29),
         clickable: true,
-        draggable: true,
+        draggable: true
       });
       marker.setPosition(state.myLatLng);
       map.addListener('click', (e) => {
@@ -261,7 +270,7 @@ export default {
         const place = autocomplete.getPlace();
         state.myLatLng = {
           lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng(),
+          lng: place.geometry.location.lng()
         };
         state.newMapLocationSelected = true;
 
@@ -325,7 +334,7 @@ export default {
             east: 180,
             west: -180,
             north: 90,
-            south: -90,
+            south: -90
           });
           strictBoundsInputElement.checked = biasInputElement.checked;
         }
@@ -335,7 +344,7 @@ export default {
 
       strictBoundsInputElement.addEventListener('change', () => {
         autocomplete.setOptions({
-          strictBounds: strictBoundsInputElement.checked,
+          strictBounds: strictBoundsInputElement.checked
         });
 
         if (strictBoundsInputElement.checked) {
@@ -353,7 +362,7 @@ export default {
     const {
       mutate: addTravelBucketListItem,
       onDone,
-      onError,
+      onError
     } = useMutation(
       gql`
         mutation addTravelBucketListItem(
@@ -385,16 +394,16 @@ export default {
             longitude: state.myLatLng.lng,
             country: country.value,
             city: city.value,
-            cloudinaryPhotoUrl: state.cloudinaryPhotoUrl,
-          },
-        },
-      }),
+            cloudinaryPhotoUrl: state.cloudinaryPhotoUrl
+          }
+        }
+      })
     );
     onDone((result) => {
       toast.success('Travel goal added successfully!', toastOptions);
       store.commit('addGoal', {
         category: storeCategories.TRAVEL,
-        data: result.data.addTravelBucketListItem,
+        data: result.data.addTravelBucketListItem
       });
       router.push('/');
     });
@@ -421,39 +430,34 @@ export default {
       map,
       state,
       handleFileUpload,
-      addTravelBucketListItem,
+      addTravelBucketListItem
     };
-  },
+  }
 };
 </script>
 
 <style>
-#photoContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-#displayImage {
+#image-display {
   margin-top: 20px;
-  width: 375px;
-  height: 211px;
-  border: 1px solid black;
+  width: 562px;
+  height: 317px;
   background-position: center;
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: 2px solid #472183;
+  border-radius: 10px;
 }
 
-/* 
+/*
  * Always set the map height explicitly to define the size of the div element
- * that contains the map. 
+ * that contains the map.
  */
 #map {
   height: 100%;
 }
 
-/* 
- * Optional: Makes the sample page fill the window. 
+/*
+ * Optional: Makes the sample page fill the window.
  */
 html,
 body {
