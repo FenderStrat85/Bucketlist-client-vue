@@ -168,5 +168,13 @@ h2 {
 }
 
 .card-container {
-  @apply flex flex-col justify-center justify-items-center items-center mb-4;
+  @apply flex flex-col justify-center justify-items-center items-center w-1/2 mb-4;
+}
+
+.datepicker-container {
+  @apply flex flex-row justify-center justify-items-center items-center;
+}
+
+.datepicker {
+  @apply w-1/2 ml-2;
 }
