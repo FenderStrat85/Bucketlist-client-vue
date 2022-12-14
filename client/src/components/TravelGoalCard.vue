@@ -1,103 +1,139 @@
 <template>
   <div>
-    <div v-if="!state.isInEditMode">
-      <div>
-        <h1>{{ travelGoal.category }} Card</h1>
-        <h2>The title is: {{ travelGoal.title }}</h2>
-        <h2>Completed? {{ travelGoal.completed }}</h2>
-        <h2>About: {{ travelGoal.about }}</h2>
-      </div>
-      <button @click="deleteBucketListItem()">Delete Goal</button>
-      <div v-if="state.showErrorMessage">
-        <h2>There has been an error deleting this item</h2>
-      </div>
-      <button @click="setToEditMode()">Edit your goal</button>
-    </div>
-    <div v-if="state.isInEditMode">
-      <form>
-        <label for="title">Title: </label>
-        <textarea
-          type="text"
-          name="title"
-          v-model="title"
-          :placeholder="placeholders.title"
-          required
-        />
-        <label for="about">About: </label>
-        <textarea
-          type="text"
-          name="about"
-          v-model="about"
-          :placeholder="placeholders.about"
-          required
-        />
-        <span>What country?</span>
-        <input
-          type="text"
-          name="country"
-          v-model="country"
-          :placeholder="placeholders.country"
-        />
-        <span>What city?</span>
-        <input
-          type="text"
-          name="city"
-          v-model="city"
-          :placeholder="placeholders.city"
-        />
-        <span>Have you completed this goal?</span>
-        <input
-          type="radio"
-          id="completed"
-          v-bind:value="true"
-          v-model="completed"
-        />
-        <label for="completed">Completed</label>
-        <input
-          type="radio"
-          id="notCompleted"
-          v-bind:value="false"
-          v-model="completed"
-        />
-        <label for="completed">Not Completed</label>
-        <div id="photoContainer">
-          <div v-if="state.cloudinaryPhotoUrl.length === 0">
-            <div>
-              <label for="image">Add a photo</label>
-              <input
-                type="file"
-                id="image"
-                accept="image/png, image/jpg, image/jpeg"
-                @change="handleFileUpload(false)"
-              />
-            </div>
-            <div id="displayImage"></div>
-          </div>
+    <Transition name="flip" mode="out-in">
+      <div v-if="!state.isInEditMode">
+        <div class="card-container">
+          <h1>{{ travelGoal.category }} Goal!</h1>
+          <h2>Goal title: {{ travelGoal.title }}</h2>
+          <h2>Completed? : {{ travelGoal.completed }}</h2>
+          <h2>About: {{ travelGoal.about }}</h2>
           <div v-if="state.cloudinaryPhotoUrl.length > 0">
-            <div>
-              <label for="image">Change your photo</label>
-              <input
-                type="file"
-                id="image"
-                accept="image/png, image/jpg, image/jpeg"
-                @change="handleFileUpload(true)"
-              />
-            </div>
-            <div>
+            <div class="photoContainer">
               <img
                 :src="state.cloudinaryPhotoUrl"
                 alt="travel goal photo"
-                id="displayImage"
+                id="image-display"
               />
             </div>
           </div>
         </div>
-      </form>
-    </div>
+        <button
+          class="button-login button-delete"
+          @click="deleteBucketListItem()"
+        >
+          Delete Goal
+        </button>
+        <div v-if="state.showErrorMessage">
+          <h2>There has been an error deleting this item</h2>
+        </div>
+        <button class="button-login button-travel" @click="setToEditMode()">
+          Edit your goal
+        </button>
+      </div>
+      <div v-else>
+        <form>
+          <div class="form-container">
+            <label for="title">Title: </label>
+            <input
+              class="form-input"
+              type="text"
+              name="title"
+              v-model="title"
+              :placeholder="placeholders.title"
+              required
+            />
+            <label for="about">About: </label>
+            <textarea
+              type="text"
+              class="form-textarea"
+              rows="5"
+              name="about"
+              v-model="about"
+              :placeholder="placeholders.about"
+              required
+            />
+            <span>What country?</span>
+            <input
+              type="text"
+              class="form-input"
+              name="country"
+              v-model="country"
+              :placeholder="placeholders.country"
+            />
+            <span>What city?</span>
+            <input
+              class="form-input"
+              type="text"
+              name="city"
+              v-model="city"
+              :placeholder="placeholders.city"
+            />
+            <div class="form-radio-container">
+              <span>Have you completed this goal?</span>
+              <input
+                type="radio"
+                id="completed"
+                v-bind:value="true"
+                v-model="completed"
+              />
+              <label for="completed">Completed</label>
+              <input
+                type="radio"
+                id="notCompleted"
+                v-bind:value="false"
+                v-model="completed"
+              />
+              <label for="completed">Not Completed</label>
+            </div>
+            <div
+              class="photo-container"
+              v-if="state.cloudinaryPhotoUrl.length === 0"
+            >
+              <div class="photo-input">
+                <label for="image">Add a photo</label>
+                <input
+                  type="file"
+                  id="image"
+                  accept="image/png, image/jpg, image/jpeg"
+                  @change="handleFileUpload(false)"
+                />
+              </div>
+              <div id="image-display"></div>
+            </div>
+            <div
+              class="photo-container"
+              v-if="state.cloudinaryPhotoUrl.length > 0"
+            >
+              <div class="photo-input">
+                <label for="image">Change your photo</label>
+                <input
+                  type="file"
+                  id="image"
+                  accept="image/png, image/jpg, image/jpeg"
+                  @change="handleFileUpload(true)"
+                />
+              </div>
+              <div>
+                <img
+                  :src="state.cloudinaryPhotoUrl"
+                  alt="travel goal photo"
+                  id="image-display"
+                />
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </Transition>
     <div id="map-display">
-      <div class="pac-card" style="width: 70%" id="pac-card">
+      <div
+        v-if="state.isInEditMode"
+        class="pac-card"
+        style="width: 70%"
+        id="pac-card"
+      >
         <div>
-          <div id="title">Autocomplete search</div>
+          <div id="title">Your selected place</div>
           <div id="type-selector" class="pac-controls">
             <input
               type="radio"
@@ -142,8 +178,15 @@
       </div>
     </div>
     <div v-if="state.isInEditMode">
-      <button @click="updateTravelBucketListItem()">Submit</button>
-      <button @click="exitEditMode()">Return to Goal</button>
+      <button class="button-login button-go-back" @click="exitEditMode()">
+        Return to Goal
+      </button>
+      <button
+        class="button-login button-travel"
+        @click="updateTravelBucketListItem()"
+      >
+        Submit
+      </button>
     </div>
     <div v-if="state.showErrorMessage">
       <h2>There has been an error updating your goal</h2>
@@ -209,10 +252,10 @@ export default {
       reader.onload = () => {
         state.imageToUpload = reader.result;
         if (changePhoto) {
-          document.getElementById('displayImage').src = state.imageToUpload;
+          document.getElementById('image-display').src = state.imageToUpload;
         } else {
           document.querySelector(
-            '#displayImage'
+            '#image-display'
           ).style.backgroundImage = `url(${state.imageToUpload})`;
         }
       };
@@ -512,19 +555,29 @@ export default {
 </script>
 
 <style>
-#photoContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+#image-display {
+  margin-top: 20px;
+  width: 562px;
+  height: 317px;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: 2px solid #472183;
+  border-radius: 10px;
 }
 
-#displayImage {
-  margin-top: 20px;
-  width: 375px;
-  height: 211px;
-  border: 1px solid black;
-  background-position: center;
-  background-size: cover;
+.flip-enter-active {
+  transition: all 0.2s cubic-bezier(0.55, 0.085, 0.68, 0.53);
+  transform-origin: 50% 50%;
+}
+.flip-leave-active {
+  transform-origin: 50% 50%;
+  transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.flip-enter-from,
+.flip-leave-to {
+  transform-origin: 50% 50%;
+  transform: scaleY(0) translateZ(0);
+  opacity: 0;
 }
 </style>

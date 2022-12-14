@@ -120,7 +120,7 @@
       <div>
         <Transition name="bounce">
           <div v-if="state.newMapLocationSelected">
-            <button class="button-login button-travel-goal-form">Submit</button>
+            <button class="button-login button-travel">Submit</button>
           </div>
           <div v-else>
             <button class="button-login" disabled>

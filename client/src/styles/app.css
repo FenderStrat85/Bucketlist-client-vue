@@ -113,16 +113,32 @@ h2 {
   @apply bg-lightBlue;
 }
 
-.button-travel-goal-form {
+.button-travel {
   @apply bg-teal;
 }
 
-.button-educational-goal-form {
+.button-educational {
   @apply bg-turquoise;
 }
 
-.button-personal-goal-form {
+.button-personal {
   @apply bg-lightGreen;
+}
+
+.button-delete {
+  @apply bg-delete;
+}
+
+.button-delete:hover {
+  @apply bg-deleteHover;
+}
+
+.button-go-back {
+  @apply bg-darkBlue;
+}
+
+.button-go-back:hover {
+  @apply bg-lightBlue;
 }
 
 /* Goal list and goal card styles */
@@ -149,4 +165,8 @@ h2 {
 
 .goal-list-container:hover {
   @apply shadow-2xl;
+}
+
+.card-container {
+  @apply flex flex-col justify-center justify-items-center items-center mb-4;
 }

@@ -1,8 +1,5 @@
 <template>
   <div>
-    <h1>Goal details!!!!</h1>
-    <h2>{{ this.category }}</h2>
-    <h2>{{ this.id }}</h2>
     <div v-if="this.category === 'travel'">
       <TravelGoalCard :id="this.id" />
     </div>
@@ -27,17 +24,14 @@ export default {
     const route = useRoute();
     const id = route.params.id;
     const category = route.params.category;
-    console.log('route', route.params);
-    console.log('id', id);
-    console.log('category', category);
     return {
       category,
       id,
       PersonalGoalCard,
       TravelGoalCard,
-      EducationalGoalCard,
+      EducationalGoalCard
     };
-  },
+  }
 };
 </script>
 

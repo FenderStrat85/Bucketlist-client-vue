@@ -95,9 +95,7 @@
             />
           </div>
         </div>
-        <button class="button-login button-educational-goal-form">
-          Submit
-        </button>
+        <button class="button-login button-educational">Submit</button>
       </div>
     </form>
     <div v-if="state.showErrorMessage">

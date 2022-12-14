@@ -12,7 +12,9 @@ module.exports = {
       turquoise: '#439A97',
       teal: '#62B6B7',
       lightGreen: '#97DECE',
-      forrestGreen: '#CBEDD5'
+      forrestGreen: '#CBEDD5',
+      delete: '#EB455F',
+      deleteHover: '#FF597B'
     }
   },
   variants: {
