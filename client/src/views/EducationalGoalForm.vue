@@ -1,88 +1,102 @@
 <template>
   <div>
-    <h1>I am the Educational Goal Form</h1>
+    <h1>Add an educational goal!</h1>
     <form @submit.prevent="addEducationalBucketListItem()">
-      <label for="title">Title: </label>
-      <textarea
-        type="text"
-        name="title"
-        v-model="title"
-        :placeholder="placeholders.title"
-        required
-      />
-      <label for="about">About: </label>
-      <textarea
-        type="text"
-        name="about"
-        v-model="about"
-        :placeholder="placeholders.about"
-        required
-      />
-      <label for="subject">Subject: </label>
-      <textarea
-        type="text"
-        name="subject"
-        v-model="subject"
-        :placeholder="placeholders.subject"
-        required
-      />
-      <label for="desiredGoal">Desired Goal: </label>
-      <textarea
-        type="text"
-        name="desiredGoal"
-        v-model="desiredGoal"
-        :placeholder="placeholders.desiredGoal"
-        required
-      />
-      <label for="reasonForLearning">Reason For Learning: </label>
-      <textarea
-        type="text"
-        name="reasonForLearning"
-        v-model="reasonForLearning"
-        :placeholder="placeholders.reasonForLearning"
-        required
-      />
-      <label for="desiredCompletionDate">Desired completion date: </label>
-      <Datepicker
-        v-model="desiredCompletionDate"
-        placeholder="Start Typing ..."
-        textInput
-        :minDate="new Date()"
-        required
-      />
-      <span>Have you completed this goal?</span>
-      <input
-        type="radio"
-        id="completed"
-        v-bind:value="true"
-        v-model="completed"
-      />
-      <label for="completed">Completed</label>
-      <input
-        type="radio"
-        id="notCompleted"
-        v-bind:value="false"
-        v-model="completed"
-      />
-      <label for="completed">Not Completed</label>
-      <div v-if="completed">
-        <span>If completed, did you complete this goal on time?</span>
-        <label for="completedOnTime">Completed on time</label>
+      <div class="form-container">
+        <label for="title">Title: </label>
         <input
-          type="radio"
-          id="completedOnTime"
-          v-bind:value="true"
-          v-model="completedOnTime"
+          class="form-input"
+          type="text"
+          name="title"
+          v-model="title"
+          :placeholder="placeholders.title"
+          required
         />
-        <label for="completedOnTime">Not completed on time</label>
+        <label for="about">About: </label>
+        <textarea
+          class="form-textarea"
+          rows="5"
+          type="text"
+          name="about"
+          v-model="about"
+          :placeholder="placeholders.about"
+          required
+        />
+        <label for="subject">Subject: </label>
         <input
-          type="radio"
-          id="notCompletedOnTime"
-          v-bind:value="false"
-          v-model="completedOnTime"
+          class="form-input"
+          type="text"
+          name="subject"
+          v-model="subject"
+          :placeholder="placeholders.subject"
+          required
         />
+        <label for="desiredGoal">Desired Goal: </label>
+        <textarea
+          type="text"
+          class="form-textarea"
+          rows="5"
+          name="desiredGoal"
+          v-model="desiredGoal"
+          :placeholder="placeholders.desiredGoal"
+          required
+        />
+        <label for="reasonForLearning">Reason For Learning: </label>
+        <textarea
+          type="text"
+          class="form-textarea"
+          rows="5"
+          name="reasonForLearning"
+          v-model="reasonForLearning"
+          :placeholder="placeholders.reasonForLearning"
+          required
+        />
+        <label for="desiredCompletionDate">Desired completion date: </label>
+        <Datepicker
+          v-model="desiredCompletionDate"
+          placeholder="Start Typing ..."
+          textInput
+          :minDate="new Date()"
+          required
+        />
+        <div class="form-radio-container">
+          <span>Have you completed this goal?</span>
+          <input
+            type="radio"
+            id="completed"
+            v-bind:value="true"
+            v-model="completed"
+          />
+          <label for="completed">Completed</label>
+          <input
+            type="radio"
+            id="notCompleted"
+            v-bind:value="false"
+            v-model="completed"
+          />
+          <label for="completed">Not Completed</label>
+        </div>
+        <div v-if="completed">
+          <div class="form-radio-container">
+            <span>If completed, did you complete this goal on time?</span>
+            <label for="completedOnTime">Completed on time</label>
+            <input
+              type="radio"
+              id="completedOnTime"
+              v-bind:value="true"
+              v-model="completedOnTime"
+            />
+            <label for="completedOnTime">Not completed on time</label>
+            <input
+              type="radio"
+              id="notCompletedOnTime"
+              v-bind:value="false"
+              v-model="completedOnTime"
+            />
+          </div>
+        </div>
+        <button class="button-login button-educational-form">Submit</button>
       </div>
-      <button>Submit</button>
     </form>
     <div v-if="state.showErrorMessage">
       <h2>There has been an error submitting your goal</h2>
@@ -107,13 +121,13 @@ import { useToast } from 'vue-toast-notification';
 
 export default {
   components: {
-    Datepicker,
+    Datepicker
   },
   setup() {
     const router = useRouter();
     const store = useStore();
     const state = reactive({
-      showErrorMessage: false,
+      showErrorMessage: false
     });
     const placeholders = goalFormPlaceholders;
     const toast = useToast();
@@ -130,7 +144,7 @@ export default {
     const {
       mutate: addEducationalBucketListItem,
       onDone,
-      onError,
+      onError
     } = useMutation(
       gql`
         mutation addEducationalBucketListItem(
@@ -164,16 +178,16 @@ export default {
             reasonForLearning: reasonForLearning.value,
             desiredCompletionDate: desiredCompletionDate.value,
             completed: completed.value,
-            completedOnTime: completedOnTime.value,
-          },
-        },
-      }),
+            completedOnTime: completedOnTime.value
+          }
+        }
+      })
     );
     onDone((result) => {
       toast.success('Educational goal successfully added', toastOptions);
       store.commit('addGoal', {
         category: storeCategories.EDUCATIONAL,
-        data: result.data.addEducationalBucketListItem,
+        data: result.data.addEducationalBucketListItem
       });
       router.push('/');
     });
@@ -195,9 +209,9 @@ export default {
       completedOnTime,
       addEducationalBucketListItem,
       state,
-      Datepicker,
+      Datepicker
     };
-  },
+  }
 };
 </script>
 

@@ -117,6 +117,10 @@ h2 {
   @apply bg-teal;
 }
 
+.button-travel-educational-form {
+  @apply bg-turquoise;
+}
+
 /* Goal list and goal card styles */
 
 .goal-list-parent-container {
