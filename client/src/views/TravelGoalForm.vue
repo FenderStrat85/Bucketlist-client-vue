@@ -73,7 +73,7 @@
       <div id="map-display">
         <div class="pac-card" style="width: 70%" id="pac-card">
           <div>
-            <div id="title">Autocomplete search</div>
+            <div id="title">Select your location</div>
             <div id="type-selector" class="pac-controls">
               <input
                 type="radio"
@@ -111,19 +111,23 @@
             <input id="pac-input" type="text" placeholder="Enter a location" />
           </div>
         </div>
-        <div id="map" style="width: 70%; height: 40vh"></div>
+        <div id="map" style="width: 80%; height: 50vh"></div>
         <div id="infowindow-content">
           <span id="place-name" class="title"></span><br />
           <span id="place-address"></span>
         </div>
       </div>
       <div>
-        <div v-if="state.newMapLocationSelected">
-          <button>Submit</button>
-        </div>
-        <div v-else>
-          <button disabled>Submit</button>
-        </div>
+        <Transition name="bounce">
+          <div v-if="state.newMapLocationSelected">
+            <button class="button-login button-travel-goal-form">Submit</button>
+          </div>
+          <div v-else>
+            <button class="button-login" disabled>
+              Complete the form first!
+            </button>
+          </div>
+        </Transition>
       </div>
     </form>
     <div v-if="state.showErrorMessage">
@@ -454,6 +458,9 @@ export default {
  */
 #map {
   height: 100%;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
 }
 
 /*
@@ -464,12 +471,6 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
-}
-
-#description {
-  font-family: Roboto;
-  font-size: 15px;
-  font-weight: 300;
 }
 
 #infowindow-content .title {
@@ -485,15 +486,13 @@ body {
 }
 
 .pac-card {
-  background-color: #fff;
+  background-color: #62b6b7;
   border: 0;
-  border-radius: 2px;
+  border-radius: 5px;
   box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
   margin: 10px;
   padding: 0 0.5em;
-  font: 400 18px Roboto, Arial, sans-serif;
   overflow: hidden;
-  font-family: Roboto;
   padding: 0;
 }
 
@@ -508,18 +507,17 @@ body {
 }
 
 .pac-controls label {
-  font-family: Roboto;
   font-size: 13px;
   font-weight: 300;
+  padding: 10px;
 }
 
 #pac-input {
   background-color: #fff;
-  font-family: Roboto;
   font-size: 15px;
   font-weight: 300;
   margin-left: 12px;
-  padding: 0 11px 0 13px;
+  padding: 5px 11px 5px 13px;
   text-overflow: ellipsis;
   width: 400px;
 }
@@ -530,7 +528,7 @@ body {
 
 #title {
   color: #fff;
-  background-color: #4d90fe;
+  background-color: #4b56d2;
   font-size: 25px;
   font-weight: 500;
   padding: 6px 12px;
@@ -540,5 +538,23 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.bounce-enter-active {
+  animation: bounce-in 0.75s;
+}
+.bounce-leave-active {
+  animation: bounce-in 0.75s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.25);
+  }
+  100% {
+    transform: scale(1);
+  }
 }
 </style>

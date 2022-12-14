@@ -113,6 +113,10 @@ h2 {
   @apply bg-lightBlue;
 }
 
+.button-travel-goal-form {
+  @apply bg-teal;
+}
+
 /* Goal list and goal card styles */
 
 .goal-list-parent-container {
