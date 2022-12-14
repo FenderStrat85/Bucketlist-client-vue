@@ -111,7 +111,7 @@
             <input id="pac-input" type="text" placeholder="Enter a location" />
           </div>
         </div>
-        <div id="map" style="width: 80%; height: 50vh"></div>
+        <div id="map" style="width: 80%; height: 60vh"></div>
         <div id="infowindow-content">
           <span id="place-name" class="title"></span><br />
           <span id="place-address"></span>

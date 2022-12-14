@@ -135,7 +135,7 @@
           <input id="pac-input" type="text" placeholder="Enter a location" />
         </div>
       </div>
-      <div id="map" style="width: 70%; height: 40vh"></div>
+      <div id="map" style="width: 80%; height: 60vh"></div>
       <div id="infowindow-content">
         <span id="place-name" class="title"></span><br />
         <span id="place-address"></span>
@@ -168,7 +168,7 @@ import { toastOptions } from '../constants/toastOptions';
 
 export default {
   props: {
-    id: String,
+    id: String
   },
   setup(props) {
     const store = useStore();
@@ -181,7 +181,7 @@ export default {
       about: travelGoal.about,
       completed: travelGoal.completed,
       country: travelGoal.country,
-      city: travelGoal.city,
+      city: travelGoal.city
     };
 
     const title = ref(travelGoal.title);
@@ -198,7 +198,7 @@ export default {
       cloudinaryPhotoUrl:
         travelGoal.cloudinaryPhotoUrl.length > 0
           ? travelGoal.cloudinaryPhotoUrl
-          : '',
+          : ''
     });
     const setToEditMode = () => (state.isInEditMode = true);
     const exitEditMode = () => (state.isInEditMode = false);
@@ -212,7 +212,7 @@ export default {
           document.getElementById('displayImage').src = state.imageToUpload;
         } else {
           document.querySelector(
-            '#displayImage',
+            '#displayImage'
           ).style.backgroundImage = `url(${state.imageToUpload})`;
         }
       };
@@ -221,12 +221,12 @@ export default {
       formData.append('file', img.files[0]);
       formData.append(
         'upload_preset',
-        process.env.VUE_APP_CLOUDINARY_UPLOAD_PRESET,
+        process.env.VUE_APP_CLOUDINARY_UPLOAD_PRESET
       );
 
       fetch(process.env.VUE_APP_CLOUDINARY_URL, {
         method: 'POST',
-        body: formData,
+        body: formData
       })
         .then((response) => response.json())
         .then((data) => {
@@ -242,7 +242,7 @@ export default {
     // Google maps code
     const startingPosition = computed(() => ({
       lat: travelGoal.latitude,
-      lng: travelGoal.longitude,
+      lng: travelGoal.longitude
     }));
 
     let map = null;
@@ -258,7 +258,7 @@ export default {
       await loader.load().then((google) => {
         map = new google.maps.Map(document.getElementById('map'), {
           center: startingPosition.value,
-          zoom: 7,
+          zoom: 7
         });
       });
       card = document.getElementById('pac-card');
@@ -268,7 +268,7 @@ export default {
       options = {
         fields: ['formatted_address', 'geometry', 'name'],
         strictBounds: false,
-        types: ['establishment'],
+        types: ['establishment']
       };
       // map.controls[google.maps.ControlPosition.TOP_LEFT].push(card);
       autocomplete = new google.maps.places.Autocomplete(input, options);
@@ -290,7 +290,7 @@ export default {
         position: state.myLatLng,
         anchorPoint: new google.maps.Point(0, -29),
         clickable: true,
-        draggable: true,
+        draggable: true
       });
       marker.setPosition(state.myLatLng);
       map.addListener('click', (e) => {
@@ -307,7 +307,7 @@ export default {
         console.log('place', place);
         state.myLatLng = {
           lat: place.geometry.location.lat(),
-          lng: place.geometry.location.lng(),
+          lng: place.geometry.location.lng()
         };
 
         if (!place.geometry || !place.geometry.location) {
@@ -369,7 +369,7 @@ export default {
             east: 180,
             west: -180,
             north: 90,
-            south: -90,
+            south: -90
           });
           strictBoundsInputElement.checked = biasInputElement.checked;
         }
@@ -379,7 +379,7 @@ export default {
 
       strictBoundsInputElement.addEventListener('change', () => {
         autocomplete.setOptions({
-          strictBounds: strictBoundsInputElement.checked,
+          strictBounds: strictBoundsInputElement.checked
         });
 
         if (strictBoundsInputElement.checked) {
@@ -397,7 +397,7 @@ export default {
     const {
       mutate: updateTravelBucketListItem,
       onDone: onDoneUpdate,
-      onError: onErrorUpdate,
+      onError: onErrorUpdate
     } = useMutation(
       gql`
         mutation updateTravelBucketListItem(
@@ -430,10 +430,10 @@ export default {
             latitude: state.myLatLng.lat,
             longitude: state.myLatLng.lng,
             completed: completed.value,
-            cloudinaryPhotoUrl: state.cloudinaryPhotoUrl,
-          },
-        },
-      }),
+            cloudinaryPhotoUrl: state.cloudinaryPhotoUrl
+          }
+        }
+      })
     );
     onDoneUpdate((result) => {
       console.log('result', result);
@@ -442,7 +442,7 @@ export default {
       }
       store.commit('updateGoal', {
         data: result.data.updateTravelBucketListItem,
-        category: storeCategories.TRAVEL,
+        category: storeCategories.TRAVEL
       });
       router.push('/');
     });
@@ -454,7 +454,7 @@ export default {
     const {
       mutate: deleteBucketListItem,
       onDone: onDoneDelete,
-      onError: onErrorDelete,
+      onError: onErrorDelete
     } = useMutation(
       gql`
         mutation deleteBucketListItem($deleteItemInput: DeleteItemInput) {
@@ -467,16 +467,16 @@ export default {
         variables: {
           deleteItemInput: {
             _id: props.id,
-            category: travelGoal.category,
-          },
-        },
-      }),
+            category: travelGoal.category
+          }
+        }
+      })
     );
     onDoneDelete((result) => {
       console.log('result', result);
       store.commit('removeGoal', {
         id: props.id,
-        category: storeCategories.TRAVEL,
+        category: storeCategories.TRAVEL
       });
       router.push('/');
     });
@@ -505,9 +505,9 @@ export default {
       completed,
       country,
       city,
-      handleFileUpload,
+      handleFileUpload
     };
-  },
+  }
 };
 </script>
 
@@ -526,99 +526,5 @@ export default {
   border: 1px solid black;
   background-position: center;
   background-size: cover;
-}
-
-/* 
- * Always set the map height explicitly to define the size of the div element
- * that contains the map. 
- */
-#map {
-  height: 100%;
-}
-
-/* 
- * Optional: Makes the sample page fill the window. 
- */
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-#description {
-  font-family: Roboto;
-  font-size: 15px;
-  font-weight: 300;
-}
-
-#infowindow-content .title {
-  font-weight: bold;
-}
-
-#infowindow-content {
-  display: none;
-}
-
-#map #infowindow-content {
-  display: inline;
-}
-
-.pac-card {
-  background-color: #fff;
-  border: 0;
-  border-radius: 2px;
-  box-shadow: 0 1px 4px -1px rgba(0, 0, 0, 0.3);
-  margin: 10px;
-  padding: 0 0.5em;
-  font: 400 18px Roboto, Arial, sans-serif;
-  overflow: hidden;
-  font-family: Roboto;
-  padding: 0;
-}
-
-#pac-container {
-  padding-bottom: 12px;
-  margin-right: 12px;
-}
-
-.pac-controls {
-  display: inline-block;
-  padding: 5px 11px;
-}
-
-.pac-controls label {
-  font-family: Roboto;
-  font-size: 13px;
-  font-weight: 300;
-}
-
-#pac-input {
-  background-color: #fff;
-  font-family: Roboto;
-  font-size: 15px;
-  font-weight: 300;
-  margin-left: 12px;
-  padding: 0 11px 0 13px;
-  text-overflow: ellipsis;
-  width: 400px;
-}
-
-#pac-input:focus {
-  border-color: #4d90fe;
-}
-
-#title {
-  color: #fff;
-  background-color: #4d90fe;
-  font-size: 25px;
-  font-weight: 500;
-  padding: 6px 12px;
-}
-
-#map-display {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 </style>
