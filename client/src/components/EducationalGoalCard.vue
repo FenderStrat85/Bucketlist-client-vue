@@ -1,8 +1,7 @@
 <template>
   <div>
-    <transition name="flip" mode="out-in">
+    <Transition name="flip" mode="out-in">
       <div v-if="!state.isInEditMode">
-        <div class="card-container"></div>
         <h1>{{ educationalGoal.category }} Goal!</h1>
         <h2>Goal title: {{ educationalGoal.title }}</h2>
         <h2>About: {{ educationalGoal.about }}</h2>
@@ -138,7 +137,7 @@
           Return to Goal
         </button>
       </div>
-    </transition>
+    </Transition>
   </div>
 </template>
 
