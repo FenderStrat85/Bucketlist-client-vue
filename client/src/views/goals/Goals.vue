@@ -200,7 +200,6 @@ export default {
     `);
     onResult((queryResult) => {
       const bucketListItems = queryResult.data.getBucketListItems;
-      console.log(bucketListItems);
       bucketListItems.forEach((item) => {
         store.commit('setDataLoadedToTrue', true);
         if (item && item.category && item.category === 'Travel') {

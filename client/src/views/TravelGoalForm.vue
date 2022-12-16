@@ -199,7 +199,6 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           if (data.secure_url !== '') {
-            console.log(data.secure_url);
             state.cloudinaryPhotoUrl = data.secure_url;
             toast.success('Image uploaded successfully', toastOptions);
           }

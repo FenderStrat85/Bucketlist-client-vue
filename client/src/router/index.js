@@ -16,54 +16,54 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
+    component: Home
   },
   {
     path: '/signup',
     name: 'Signup',
-    component: Signup,
+    component: Signup
   },
   {
     path: '/login',
     name: 'Login',
-    component: Login,
+    component: Login
   },
   {
     path: '/addpersonalgoal',
     name: 'PersonalGoalForm',
-    component: PersonalGoalForm,
+    component: PersonalGoalForm
   },
   {
     path: '/addeducationalgoal',
     name: 'EducationalGoalForm',
-    component: EducationalGoalForm,
+    component: EducationalGoalForm
   },
   {
     path: '/addtravelgoal',
     name: 'TravelGoalForm',
-    component: TravelGoalForm,
+    component: TravelGoalForm
   },
   {
     path: '/goals',
     name: 'Goals',
-    component: Goals,
+    component: Goals
   },
   {
     path: '/goals/:category/:id',
     name: 'GoalDetails',
     component: GoalDetails,
-    props: true,
+    props: true
   },
   {
     path: '/:catchAll(.*)',
     name: 'NotFound',
-    component: NotFound,
-  },
+    component: NotFound
+  }
 ];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes,
+  routes
 });
 
 //before entering each route, if not login/signup then redirect to login page.
@@ -73,7 +73,6 @@ router.beforeEach((to, from, next) => {
     to.name !== 'Signup' &&
     !store.state.isAuthenticated
   ) {
-    console.log(store.state);
     next({ name: 'Login' });
   } else next();
 });

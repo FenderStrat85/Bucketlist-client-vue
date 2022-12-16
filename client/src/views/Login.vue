@@ -58,10 +58,7 @@ export default {
     const email = ref('');
     const password = ref('');
 
-    const handleSubmit = () => {
-      console.log(email.value);
-      console.log(password.value);
-    };
+    const handleSubmit = () => {};
     const {
       mutate: loginUser,
       onDone,

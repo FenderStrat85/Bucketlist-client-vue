@@ -274,9 +274,7 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           if (data.secure_url !== '') {
-            console.log(data.secure_url);
             state.cloudinaryPhotoUrl = data.secure_url;
-            console.log(state.cloudinaryPhotoUrl);
           }
         })
         .catch((err) => console.error(err));
@@ -347,7 +345,6 @@ export default {
 
         // set stored lat/lng values to that of the place. Can be overwritten by clicking on map
         const place = autocomplete.getPlace();
-        console.log('place', place);
         state.myLatLng = {
           lat: place.geometry.location.lat(),
           lng: place.geometry.location.lng()
@@ -479,7 +476,6 @@ export default {
       })
     );
     onDoneUpdate((result) => {
-      console.log('result', result);
       if (result) {
         toast.success('Travel goal updated successfully', toastOptions);
       }
@@ -515,8 +511,7 @@ export default {
         }
       })
     );
-    onDoneDelete((result) => {
-      console.log('result', result);
+    onDoneDelete(() => {
       store.commit('removeGoal', {
         id: props.id,
         category: storeCategories.TRAVEL
