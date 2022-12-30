@@ -25,10 +25,6 @@ There's a few things you need to do to get started:
 npm install npm@latest -g
 ```
 
-- Database
-
-You will need to create a MongoDB database. You can set the JWTSecret and port for the database in the environment variables as shown in the .env.example file. You will need to have MongoDB installed locally on your machine
-
 1. Clone this repo
 
 2. `npm install`
